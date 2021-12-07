@@ -1,0 +1,60 @@
+---
+endpoints:
+  - client_1:
+      host: a.hosts.k3rn3l.io
+      port: 7801
+      description: digitalocean droplet 01
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+      tags:
+        - vm
+        - gpu
+        - 10g
+        - win
+        - windows10
+        - server
+  - server_1:
+      host: b.hosts.k3rn3l.io
+      port: 7801
+      description: digitalocean droplet 02
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+      tags:
+        - gpu
+        - 10g
+        - 40g
+        - linux
+        - ubuntu18.04
+        - client
+flows:
+  - download_1:
+      type: http
+      params:
+        verb: GET
+        version: 1
+        secure: no
+        keepalive: no
+        source: rand
+        size: 1.5M
+        cachable: true
+  - download_2:
+      type: http
+      params:
+        verb: GET
+        version: 2
+        source: rand
+        size: 567
+        cachable: false
+test:
+  type: timeline
+  default_max_duration: 60s
+  params:
+    - 1s:
+        client: a.hosts.k3rn3l.io
+        server: b.hosts.k3rn3l.io
+        flows:
+          - download_1
+    - 60s:
+        client: a.hosts.k3rn3l.io
+        server: b.hosts.k3rn3l.io
+        flows:
+          - download_2
+

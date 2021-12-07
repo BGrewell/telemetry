@@ -1,0 +1,41 @@
+
+
+service ControlChannel {
+
+}
+
+service TelemetryChannel {
+
+}
+
+message PingRequest {
+  required uint64 request_id = 1;
+}
+
+message PingResponse {
+  enum PingStatus {
+    OK = 0;
+    STARTING = 1;
+    STOPPING = 2;
+    READY = 3;
+    BUSY = 4;
+    ERROR = 5;
+  }
+  required uint64 response_id = 1;
+  required uint64 request_id = 2;
+  required PingStatus status = 3;
+}
+
+message TimeSyncRequest {
+  required uint64 request_id = 1;
+  required int64 t1 = 2;
+}
+
+message TimeSyncResponse {
+  required uint64 response_id = 1;
+  required uint64 request_id = 2;
+  required int64 t1 = 10;
+  required int64 t2 = 11;
+  required int64 t3 = 12;
+  optional int64 t4 = 13;
+}

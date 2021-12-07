@@ -1,0 +1,172 @@
+---
+endpoints:
+  # Clients have a name, hostname, control port, description, security token used to authenticate and a set of tags used for selection when then name isn't directly specified
+  - client_1:
+      host: a.hosts.k3rn3l.io
+      port: 7881
+      description: vm client 1
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+      tags:
+        - vm
+        - gpu
+        - 10g
+        - win
+        - windows10
+  - client_2:
+      host: b.hosts.k3rn3l.io
+      port: 7881
+      description: vm client 1
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+      tags:
+        - vm
+        - gpu
+        - 10g
+        - linux
+        - ubuntu20.04
+  - client_3:
+      host: c.hosts.k3rn3l.io
+      port: 7881
+      description: vm client 1
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+      tags:
+        - linux
+        - ubuntu18.04
+  - server_1:
+      host: x.hosts.k3rn3l.io
+      port: 7881
+      description: vm client 1
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+      tags:
+        - gpu
+        - 10g
+        - linux
+        - ubuntu18.04
+  - server_2:
+      host: y.hosts.k3rn3l.io
+      port: 7881
+      description: vm client 1
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+      tags:
+        - gpu
+        - 40g
+        - linux
+        - ubuntu20.04
+  - server_3:
+      host: z.hosts.k3rn3l.io
+      port: 7881
+      description: vm client 1
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+      tags:
+        - 40g
+        - win
+        - server2019
+flows:
+  # when http is used with a 'rand' source the server specified in the test section will spin up a http server and servce a random file/page matching the
+  # specified parameters such as size and if it is cachable
+  - download_1:
+      type: http
+      params:
+        version: 2
+        source: rand
+        size: 1M
+        cacheable: false
+  # Size can be specified as a range and a random value within that range will be selected
+  - download_2:
+      type: http
+      params:
+        version: 3
+        source: rand
+        size: 100K-3M
+        cacheable: false
+  # Live websites can be specified as the source in which case the test will skip the specified server and instead have the client request the live site
+  - download_3:
+      type: http
+      params:
+        version: 1
+        source: http://www.google.com/
+        cacheable: true # Setting cachable to true will set headers to allow any middle boxes to cache the web page
+  - upload_1:
+      type: http
+      params:
+        source: rand
+        size: 1.5M
+        cacheable: true
+  - upload_2:
+      type: http
+      params:
+        version: 2
+        source: rand
+        size: 567
+        cacheable: false
+  # TCP or UDP flows can be given a fixed rate to transmit at as well as a flow direction of 'toClient', 'toServer' or 'both'
+  - tcpflow_1:
+      type: tcp
+      params:
+        rate: 100M
+        direction: toClient
+  # Schedulers can also be specified to control interpacket transmission characteristics
+  - tcpflow_2:
+      type: tcp
+      params:
+        scheduler: fixedInterval
+        rate: 500M
+        direction: both
+  # Voice traffic can be specified including the codec to use
+  - voip_1:
+      type: voip
+      params:
+        codec: g711
+test:
+  # Currently supported types are 'timeline' and 'simple'. Simple runs all test flows at once. Timeline allows the start time and optionally the max duration to be specified
+  # flows without a max duration will use the default max duration and flows like http will often finish in whatever time it takes to download their resource only being cut 
+  # short if they run over the max duration.
+  type: timeline
+  default_max_duration: 60s
+  params:
+    - 1s:
+        client: x.hosts.k3nr3l.io
+        server: y.hosts.k3nr3l.io
+        flows:
+          - download_1
+    - 10s:
+        client: x.hosts.k3nr3l.io
+        server: y.hosts.k3nr3l.io
+        flows:
+          - download_2
+    - 25s:
+        # endpoint selection modes can be specified to allow more then a static selection of client/server. In this case it is selecting all of which requires an
+        # even amount of clients and servers and will match them 1:1 in a random order.
+        mode: allOf
+        client: [a.hosts.k3nr3l.io, b.hosts.k3nr3l.io, c.hosts.k3nr3l.io]
+        server: [x.hosts.k3nr3l.io, y.hosts.k3nr3l.io, z.hosts.k3nr3l.io]
+        # Flows also support selection modes, in this case we have two flows and a mode of 'oneOf' so either 'download_3' or 'upload_1' will be selected for each client/server
+        # pair specified above
+        flows:
+          - download_3
+          - upload_1
+        flowMode: oneOf
+        max_duration: 30s
+    - 40s:
+        # The endpoint selection shown below will select one client and one server. The client must match both '10g' and 'win' tags while the server must match either '10g'
+        # or '40g' tags
+        mode: oneOf
+        client: tags(all(10g,win))
+        server: tags(any(40g,10g))
+        flows:
+          - upload_2
+          - tcpflow_1
+    - 50s:
+        # The endpoint selection also supports the 'any' meta tag which will select a random endpoint. In addition to the 'any' meta tag there is the 'all' meta tag which will
+        # select all of the endpoints. In the case of this test it will select a random endpoint for the client and a random endpoint for the server, the 'allOf' mode selector 
+        # doesn't have much meaning here as we only have a single client and a single server and it is the default mode
+        mode: allOf
+        client: [any]
+        server: [any]
+        flows:
+          - voip_1
+        max_duration: 45s
+    - 70s:
+        client: client_1
+        server: server_1
+        flows:
+          - tcpflow_2

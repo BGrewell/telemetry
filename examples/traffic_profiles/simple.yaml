@@ -1,0 +1,45 @@
+---
+endpoints:
+  - client1:
+      host: 127.0.0.1
+      port: 7801
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+  - client2:
+      host: 127.0.0.1
+      port: 7801
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+  - server:
+      host: 127.0.0.1
+      port: 7802
+      token: abcdefghijklmnopqrstuvwxyz0123456789
+flows:
+  - 100MTcpBiDi:
+      type: tcp
+      params:
+        rate: 100M
+        direction: both
+  - 50MTcpDl:
+      type: tcp
+      params:
+        rate: 50M
+        direction: toClient
+  - VoIP:
+      type: udp
+      params:
+        rate: 10M
+        direction: both
+test:
+  type: simple
+  default_max_duration: 60s
+  params:
+    - client1_flow:
+        client: client1
+        server: server
+        flows:
+          - 100MTcpBiDi
+          - VoIP
+    - client2_flow:
+        client: client2
+        server: server
+        flows:
+          - 50MTcpDl
