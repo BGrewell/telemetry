@@ -10,7 +10,14 @@ GORUN=$(GOCMD) run
 BINARY_NAME=$(shell basename $(CURDIR))
 
 # Compiler flags
-LD_FLAGS=-X 'main.version=$$(git describe --tags)' -X 'main.date=$$(date +"%Y.%m.%d_%H%M%S")' -X 'main.rev=$$(git rev-parse --short HEAD)' -X 'main.branch=$$(git rev-parse --abbrev-ref HEAD | tr -d '\040\011\012\015\n')'
+LD_FLAGS=-X 'main.version=$$(git describe --tags)' \
+-X 'main.date=$$(date +"%Y.%m.%d_%H%M%S")' \
+-X 'main.rev=$$(git rev-parse --short HEAD)' \
+-X 'main.branch=$$(git rev-parse --abbrev-ref HEAD | tr -d '\040\011\012\015\n')' \
+-X 'pkg.version=$$(git describe --tags)' \
+-X 'pkg.date=$$(date +"%Y.%m.%d_%H%M%S")' \
+-X 'pkg.rev=$$(git rev-parse --short HEAD)' \
+-X 'pkg.branch=$$(git rev-parse --abbrev-ref HEAD | tr -d '\040\011\012\015\n')'
 
 # Tool Arguments
 TAGS=json,yaml,xml

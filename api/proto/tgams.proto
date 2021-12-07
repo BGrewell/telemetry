@@ -1,4 +1,8 @@
+syntax = "proto3";
 
+option csharp_namespace = "BenGrewell.Tgams";
+
+option go_package = "github.com/BGrewell/tgams/api/go";
 
 service ControlChannel {
 
@@ -9,7 +13,7 @@ service TelemetryChannel {
 }
 
 message PingRequest {
-  required uint64 request_id = 1;
+  uint64 request_id = 1;
 }
 
 message PingResponse {
@@ -21,21 +25,21 @@ message PingResponse {
     BUSY = 4;
     ERROR = 5;
   }
-  required uint64 response_id = 1;
-  required uint64 request_id = 2;
-  required PingStatus status = 3;
+  uint64 response_id = 1;
+  uint64 request_id = 2;
+  PingStatus status = 3;
 }
 
 message TimeSyncRequest {
-  required uint64 request_id = 1;
-  required int64 t1 = 2;
+  uint64 request_id = 1;
+  int64 t1 = 2;
 }
 
 message TimeSyncResponse {
-  required uint64 response_id = 1;
-  required uint64 request_id = 2;
-  required int64 t1 = 10;
-  required int64 t2 = 11;
-  required int64 t3 = 12;
-  optional int64 t4 = 13;
+  uint64 response_id = 1;
+  uint64 request_id = 2;
+  int64 t1 = 10;
+  int64 t2 = 11;
+  int64 t3 = 12;
+  int64 t4 = 13;
 }

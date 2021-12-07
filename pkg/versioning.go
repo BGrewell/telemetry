@@ -2,7 +2,7 @@ package pkg
 
 var (
 	version = "0.0.1"
-	commit  = "none"
+	date  = "none"
 	rev = "none"
 	branch = "none"
 )
