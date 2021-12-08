@@ -1,45 +1,116 @@
 syntax = "proto3";
 
 option csharp_namespace = "BenGrewell.Tgams";
-
 option go_package = "github.com/BGrewell/tgams/api/go";
 
 service ControlChannel {
-
+  rpc Ping(PingRequest) returns (PingResponse);
+  rpc TimeSync(TimeSyncRequest) returns (TimeSyncResponse);
+  rpc StartTelemetry(StartTelemetryRequest) returns (StartTelemetryResponse);
+  rpc StopTelemetry(StopTelemetryRequest) returns (StopTelemetryResponse);
+  rpc GetTelemetry(GetTelemetryRequest) returns (GetTelemetryResponse);
 }
 
-service TelemetryChannel {
-
+enum TriggerType {
+  TRIGGER_UNKNOWN = 0;
+  TRIGGER_INSTANT = 1;
+  TRIGGER_ABSOLUTE = 2;
+  TRIGGER_RELATIVE = 3;
+  TRIGGER_START = 4;
 }
 
+enum OutputType {
+  OUTPUT_UNKNOWN = 0;
+  OUTPUT_PULL = 1;
+  OUTPUT_FILE = 2;
+  OUTPUT_SOCKET = 3;
+  OUTPUT_PIPE = 4;
+}
+
+enum TelemetryType {
+  TELEMETRY_UNKNOWN = 0;
+  TELEMETRY_THROUGHPUT = 1;
+  TELEMETRY_LATENCY = 2;
+  TELEMETRY_CPU = 3;
+}
+
+// Output object holds a specific output type and value
+message Output {
+  OutputType type = 1;
+  string value = 2;
+}
+
+message Telemetry {
+  TelemetryType type = 1;
+  uint32 interval = 2;
+  string session = 10;
+}
+
+// PingRequest sends a ping to a remote host
 message PingRequest {
-  uint64 request_id = 1;
+  uint64 id = 1;
 }
 
+// PingResponse sends a response to a ping request
 message PingResponse {
   enum PingStatus {
-    OK = 0;
-    STARTING = 1;
-    STOPPING = 2;
-    READY = 3;
-    BUSY = 4;
-    ERROR = 5;
+    UNKNOWN = 0;
+    OK = 1;
+    STARTING = 2;
+    STOPPING = 3;
+    READY = 4;
+    BUSY = 5;
+    ERROR = 6;
   }
-  uint64 response_id = 1;
+  uint64 id = 1;
   uint64 request_id = 2;
   PingStatus status = 3;
 }
 
+// TimeSyncRequest sends a request to start a TimeSync probe
 message TimeSyncRequest {
-  uint64 request_id = 1;
+  uint64 id = 1;
   int64 t1 = 2;
 }
 
+// TimeSyncResponse sends a response to a TimeSync request
 message TimeSyncResponse {
-  uint64 response_id = 1;
+  uint64 id = 1;
   uint64 request_id = 2;
   int64 t1 = 10;
   int64 t2 = 11;
   int64 t3 = 12;
   int64 t4 = 13;
+}
+
+// StartTelemetryRequest sends a request to start gathering telemetry
+message StartTelemetryRequest {
+  uint64 id = 1;
+  TriggerType trigger_type = 2;
+  int64 trigger_value = 3;
+  repeated Output outputs = 4;
+  repeated Telemetry telemetries = 10;
+}
+
+// StartTelemetryResponse sends a response to a start telemetry request
+message StartTelemetryResponse {
+  uint64 id = 1;
+  uint64 request_id = 2;
+  repeated Telemetry telemetries = 10;
+}
+
+message GetTelemetryRequest {
+
+}
+
+message GetTelemetryResponse {
+
+}
+
+message StopTelemetryRequest {
+
+}
+
+message StopTelemetryResponse {
+
 }
