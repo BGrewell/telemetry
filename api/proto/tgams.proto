@@ -3,7 +3,8 @@ syntax = "proto3";
 option csharp_namespace = "BenGrewell.Tgams";
 option go_package = "github.com/BGrewell/tgams/api/go";
 
-service ControlChannel {
+// Control service is the primary control channel
+service Control {
   rpc Ping(PingRequest) returns (PingResponse);
   rpc TimeSync(TimeSyncRequest) returns (TimeSyncResponse);
   rpc StartTelemetry(StartTelemetryRequest) returns (StartTelemetryResponse);
@@ -11,6 +12,7 @@ service ControlChannel {
   rpc GetTelemetry(GetTelemetryRequest) returns (GetTelemetryResponse);
 }
 
+// TriggerType is an enum of the various types of triggers that can be used by telemetry items
 enum TriggerType {
   TRIGGER_UNKNOWN = 0;
   TRIGGER_INSTANT = 1;
@@ -19,6 +21,7 @@ enum TriggerType {
   TRIGGER_START = 4;
 }
 
+// OutputType is an enum of the various types of output that telemetry items can support
 enum OutputType {
   OUTPUT_UNKNOWN = 0;
   OUTPUT_PULL = 1;
@@ -27,23 +30,10 @@ enum OutputType {
   OUTPUT_PIPE = 4;
 }
 
-enum TelemetryType {
-  TELEMETRY_UNKNOWN = 0;
-  TELEMETRY_THROUGHPUT = 1;
-  TELEMETRY_LATENCY = 2;
-  TELEMETRY_CPU = 3;
-}
-
 // Output object holds a specific output type and value
 message Output {
   OutputType type = 1;
   string value = 2;
-}
-
-message Telemetry {
-  TelemetryType type = 1;
-  uint32 interval = 2;
-  string session = 10;
 }
 
 // PingRequest sends a ping to a remote host
@@ -83,6 +73,22 @@ message TimeSyncResponse {
   int64 t4 = 13;
 }
 
+// TelemetryType is an enum that contains the various telemetry types
+enum TelemetryType {
+  TELEMETRY_UNKNOWN = 0;
+  TELEMETRY_THROUGHPUT = 1;
+  TELEMETRY_LATENCY = 2;
+  TELEMETRY_CPU = 3;
+}
+
+// Telemetry is a wrapper around a single telemetry collection request
+message Telemetry {
+  TelemetryType type = 1;
+  uint32 interval = 2;
+  string session = 10;
+  map<string, string> params = 11;
+}
+
 // StartTelemetryRequest sends a request to start gathering telemetry
 message StartTelemetryRequest {
   uint64 id = 1;
@@ -99,18 +105,28 @@ message StartTelemetryResponse {
   repeated Telemetry telemetries = 10;
 }
 
+// GetTelemetryRequest sends a request to retrieve the telemetry data in json format
 message GetTelemetryRequest {
-
+  uint64 id = 1;
+  string session = 2;
 }
 
+// GetTelemetryResponse sends a response to a get telemetry request
 message GetTelemetryResponse {
-
+  uint64 id = 1;
+  uint64 request_id = 2;
+  repeated string values = 10;
 }
 
+// StopTelemetryRequest sends a request to stop gathering telemetry
 message StopTelemetryRequest {
-
+  uint64 id = 1;
+  string session = 2;
 }
 
+// StopTelemetryResponse sends a response to a stop telemetry request along with the telemetry data
 message StopTelemetryResponse {
-
+  uint64 id = 1;
+  uint64 request_id = 2;
+  repeated string values = 10;
 }
