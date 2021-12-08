@@ -24,30 +24,265 @@ namespace BenGrewell.Tgams {
     static TgamsReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgt0Z2Ftcy5wcm90byIhCgtQaW5nUmVxdWVzdBISCgpyZXF1ZXN0X2lkGAEg",
-            "ASgEIrMBCgxQaW5nUmVzcG9uc2USEwoLcmVzcG9uc2VfaWQYASABKAQSEgoK",
-            "cmVxdWVzdF9pZBgCIAEoBBIoCgZzdGF0dXMYAyABKA4yGC5QaW5nUmVzcG9u",
-            "c2UuUGluZ1N0YXR1cyJQCgpQaW5nU3RhdHVzEgYKAk9LEAASDAoIU1RBUlRJ",
-            "TkcQARIMCghTVE9QUElORxACEgkKBVJFQURZEAMSCAoEQlVTWRAEEgkKBUVS",
-            "Uk9SEAUiMQoPVGltZVN5bmNSZXF1ZXN0EhIKCnJlcXVlc3RfaWQYASABKAQS",
-            "CgoCdDEYAiABKAMiawoQVGltZVN5bmNSZXNwb25zZRITCgtyZXNwb25zZV9p",
-            "ZBgBIAEoBBISCgpyZXF1ZXN0X2lkGAIgASgEEgoKAnQxGAogASgDEgoKAnQy",
-            "GAsgASgDEgoKAnQzGAwgASgDEgoKAnQ0GA0gASgDMhAKDkNvbnRyb2xDaGFu",
-            "bmVsMhIKEFRlbGVtZXRyeUNoYW5uZWxCNVogZ2l0aHViLmNvbS9CR3Jld2Vs",
-            "bC90Z2Ftcy9hcGkvZ2+qAhBCZW5HcmV3ZWxsLlRnYW1zYgZwcm90bzM="));
+            "Cgt0Z2Ftcy5wcm90byIyCgZPdXRwdXQSGQoEdHlwZRgBIAEoDjILLk91dHB1",
+            "dFR5cGUSDQoFdmFsdWUYAiABKAkiGQoLUGluZ1JlcXVlc3QSCgoCaWQYASAB",
+            "KAQitwEKDFBpbmdSZXNwb25zZRIKCgJpZBgBIAEoBBISCgpyZXF1ZXN0X2lk",
+            "GAIgASgEEigKBnN0YXR1cxgDIAEoDjIYLlBpbmdSZXNwb25zZS5QaW5nU3Rh",
+            "dHVzIl0KClBpbmdTdGF0dXMSCwoHVU5LTk9XThAAEgYKAk9LEAESDAoIU1RB",
+            "UlRJTkcQAhIMCghTVE9QUElORxADEgkKBVJFQURZEAQSCAoEQlVTWRAFEgkK",
+            "BUVSUk9SEAYiKQoPVGltZVN5bmNSZXF1ZXN0EgoKAmlkGAEgASgEEgoKAnQx",
+            "GAIgASgDImIKEFRpbWVTeW5jUmVzcG9uc2USCgoCaWQYASABKAQSEgoKcmVx",
+            "dWVzdF9pZBgCIAEoBBIKCgJ0MRgKIAEoAxIKCgJ0MhgLIAEoAxIKCgJ0MxgM",
+            "IAEoAxIKCgJ0NBgNIAEoAyKjAQoJVGVsZW1ldHJ5EhwKBHR5cGUYASABKA4y",
+            "Di5UZWxlbWV0cnlUeXBlEhAKCGludGVydmFsGAIgASgNEg8KB3Nlc3Npb24Y",
+            "CiABKAkSJgoGcGFyYW1zGAsgAygLMhYuVGVsZW1ldHJ5LlBhcmFtc0VudHJ5",
+            "Gi0KC1BhcmFtc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToC",
+            "OAEimQEKFVN0YXJ0VGVsZW1ldHJ5UmVxdWVzdBIKCgJpZBgBIAEoBBIiCgx0",
+            "cmlnZ2VyX3R5cGUYAiABKA4yDC5UcmlnZ2VyVHlwZRIVCg10cmlnZ2VyX3Zh",
+            "bHVlGAMgASgDEhgKB291dHB1dHMYBCADKAsyBy5PdXRwdXQSHwoLdGVsZW1l",
+            "dHJpZXMYCiADKAsyCi5UZWxlbWV0cnkiWQoWU3RhcnRUZWxlbWV0cnlSZXNw",
+            "b25zZRIKCgJpZBgBIAEoBBISCgpyZXF1ZXN0X2lkGAIgASgEEh8KC3RlbGVt",
+            "ZXRyaWVzGAogAygLMgouVGVsZW1ldHJ5IjIKE0dldFRlbGVtZXRyeVJlcXVl",
+            "c3QSCgoCaWQYASABKAQSDwoHc2Vzc2lvbhgCIAEoCSJGChRHZXRUZWxlbWV0",
+            "cnlSZXNwb25zZRIKCgJpZBgBIAEoBBISCgpyZXF1ZXN0X2lkGAIgASgEEg4K",
+            "BnZhbHVlcxgKIAMoCSIzChRTdG9wVGVsZW1ldHJ5UmVxdWVzdBIKCgJpZBgB",
+            "IAEoBBIPCgdzZXNzaW9uGAIgASgJIkcKFVN0b3BUZWxlbWV0cnlSZXNwb25z",
+            "ZRIKCgJpZBgBIAEoBBISCgpyZXF1ZXN0X2lkGAIgASgEEg4KBnZhbHVlcxgK",
+            "IAMoCSp2CgtUcmlnZ2VyVHlwZRITCg9UUklHR0VSX1VOS05PV04QABITCg9U",
+            "UklHR0VSX0lOU1RBTlQQARIUChBUUklHR0VSX0FCU09MVVRFEAISFAoQVFJJ",
+            "R0dFUl9SRUxBVElWRRADEhEKDVRSSUdHRVJfU1RBUlQQBCpmCgpPdXRwdXRU",
+            "eXBlEhIKDk9VVFBVVF9VTktOT1dOEAASDwoLT1VUUFVUX1BVTEwQARIPCgtP",
+            "VVRQVVRfRklMRRACEhEKDU9VVFBVVF9TT0NLRVQQAxIPCgtPVVRQVVRfUElQ",
+            "RRAEKmoKDVRlbGVtZXRyeVR5cGUSFQoRVEVMRU1FVFJZX1VOS05PV04QABIY",
+            "ChRURUxFTUVUUllfVEhST1VHSFBVVBABEhUKEVRFTEVNRVRSWV9MQVRFTkNZ",
+            "EAISEQoNVEVMRU1FVFJZX0NQVRADMp8CCgdDb250cm9sEiMKBFBpbmcSDC5Q",
+            "aW5nUmVxdWVzdBoNLlBpbmdSZXNwb25zZRIvCghUaW1lU3luYxIQLlRpbWVT",
+            "eW5jUmVxdWVzdBoRLlRpbWVTeW5jUmVzcG9uc2USQQoOU3RhcnRUZWxlbWV0",
+            "cnkSFi5TdGFydFRlbGVtZXRyeVJlcXVlc3QaFy5TdGFydFRlbGVtZXRyeVJl",
+            "c3BvbnNlEj4KDVN0b3BUZWxlbWV0cnkSFS5TdG9wVGVsZW1ldHJ5UmVxdWVz",
+            "dBoWLlN0b3BUZWxlbWV0cnlSZXNwb25zZRI7CgxHZXRUZWxlbWV0cnkSFC5H",
+            "ZXRUZWxlbWV0cnlSZXF1ZXN0GhUuR2V0VGVsZW1ldHJ5UmVzcG9uc2VCNVog",
+            "Z2l0aHViLmNvbS9CR3Jld2VsbC90Z2Ftcy9hcGkvZ2+qAhBCZW5HcmV3ZWxs",
+            "LlRnYW1zYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.PingRequest), global::BenGrewell.Tgams.PingRequest.Parser, new[]{ "RequestId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.PingResponse), global::BenGrewell.Tgams.PingResponse.Parser, new[]{ "ResponseId", "RequestId", "Status" }, null, new[]{ typeof(global::BenGrewell.Tgams.PingResponse.Types.PingStatus) }, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.TimeSyncRequest), global::BenGrewell.Tgams.TimeSyncRequest.Parser, new[]{ "RequestId", "T1" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.TimeSyncResponse), global::BenGrewell.Tgams.TimeSyncResponse.Parser, new[]{ "ResponseId", "RequestId", "T1", "T2", "T3", "T4" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::BenGrewell.Tgams.TriggerType), typeof(global::BenGrewell.Tgams.OutputType), typeof(global::BenGrewell.Tgams.TelemetryType), }, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.Output), global::BenGrewell.Tgams.Output.Parser, new[]{ "Type", "Value" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.PingRequest), global::BenGrewell.Tgams.PingRequest.Parser, new[]{ "Id" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.PingResponse), global::BenGrewell.Tgams.PingResponse.Parser, new[]{ "Id", "RequestId", "Status" }, null, new[]{ typeof(global::BenGrewell.Tgams.PingResponse.Types.PingStatus) }, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.TimeSyncRequest), global::BenGrewell.Tgams.TimeSyncRequest.Parser, new[]{ "Id", "T1" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.TimeSyncResponse), global::BenGrewell.Tgams.TimeSyncResponse.Parser, new[]{ "Id", "RequestId", "T1", "T2", "T3", "T4" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.Telemetry), global::BenGrewell.Tgams.Telemetry.Parser, new[]{ "Type", "Interval", "Session", "Params" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.StartTelemetryRequest), global::BenGrewell.Tgams.StartTelemetryRequest.Parser, new[]{ "Id", "TriggerType", "TriggerValue", "Outputs", "Telemetries" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.StartTelemetryResponse), global::BenGrewell.Tgams.StartTelemetryResponse.Parser, new[]{ "Id", "RequestId", "Telemetries" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.GetTelemetryRequest), global::BenGrewell.Tgams.GetTelemetryRequest.Parser, new[]{ "Id", "Session" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.GetTelemetryResponse), global::BenGrewell.Tgams.GetTelemetryResponse.Parser, new[]{ "Id", "RequestId", "Values" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.StopTelemetryRequest), global::BenGrewell.Tgams.StopTelemetryRequest.Parser, new[]{ "Id", "Session" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::BenGrewell.Tgams.StopTelemetryResponse), global::BenGrewell.Tgams.StopTelemetryResponse.Parser, new[]{ "Id", "RequestId", "Values" }, null, null, null)
           }));
     }
     #endregion
 
   }
+  #region Enums
+  /// <summary>
+  /// TriggerType is an enum of the various types of triggers that can be used by telemetry items
+  /// </summary>
+  public enum TriggerType {
+    [pbr::OriginalName("TRIGGER_UNKNOWN")] TriggerUnknown = 0,
+    [pbr::OriginalName("TRIGGER_INSTANT")] TriggerInstant = 1,
+    [pbr::OriginalName("TRIGGER_ABSOLUTE")] TriggerAbsolute = 2,
+    [pbr::OriginalName("TRIGGER_RELATIVE")] TriggerRelative = 3,
+    [pbr::OriginalName("TRIGGER_START")] TriggerStart = 4,
+  }
+
+  /// <summary>
+  /// OutputType is an enum of the various types of output that telemetry items can support
+  /// </summary>
+  public enum OutputType {
+    [pbr::OriginalName("OUTPUT_UNKNOWN")] OutputUnknown = 0,
+    [pbr::OriginalName("OUTPUT_PULL")] OutputPull = 1,
+    [pbr::OriginalName("OUTPUT_FILE")] OutputFile = 2,
+    [pbr::OriginalName("OUTPUT_SOCKET")] OutputSocket = 3,
+    [pbr::OriginalName("OUTPUT_PIPE")] OutputPipe = 4,
+  }
+
+  /// <summary>
+  /// TelemetryType is an enum that contains the various telemetry types
+  /// </summary>
+  public enum TelemetryType {
+    [pbr::OriginalName("TELEMETRY_UNKNOWN")] TelemetryUnknown = 0,
+    [pbr::OriginalName("TELEMETRY_THROUGHPUT")] TelemetryThroughput = 1,
+    [pbr::OriginalName("TELEMETRY_LATENCY")] TelemetryLatency = 2,
+    [pbr::OriginalName("TELEMETRY_CPU")] TelemetryCpu = 3,
+  }
+
+  #endregion
+
   #region Messages
+  /// <summary>
+  /// Output object holds a specific output type and value
+  /// </summary>
+  public sealed partial class Output : pb::IMessage<Output> {
+    private static readonly pb::MessageParser<Output> _parser = new pb::MessageParser<Output>(() => new Output());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Output> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Output() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Output(Output other) : this() {
+      type_ = other.type_;
+      value_ = other.value_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Output Clone() {
+      return new Output(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private global::BenGrewell.Tgams.OutputType type_ = 0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::BenGrewell.Tgams.OutputType Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "value" field.</summary>
+    public const int ValueFieldNumber = 2;
+    private string value_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Value {
+      get { return value_; }
+      set {
+        value_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Output);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Output other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (Value != other.Value) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type != 0) hash ^= Type.GetHashCode();
+      if (Value.Length != 0) hash ^= Value.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type != 0) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      if (Value.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Value);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      if (Value.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Value);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Output other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type != 0) {
+        Type = other.Type;
+      }
+      if (other.Value.Length != 0) {
+        Value = other.Value;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            type_ = (global::BenGrewell.Tgams.OutputType) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            Value = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// PingRequest sends a ping to a remote host
+  /// </summary>
   public sealed partial class PingRequest : pb::IMessage<PingRequest> {
     private static readonly pb::MessageParser<PingRequest> _parser = new pb::MessageParser<PingRequest>(() => new PingRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -56,7 +291,7 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[0]; }
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -73,7 +308,7 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PingRequest(PingRequest other) : this() {
-      requestId_ = other.requestId_;
+      id_ = other.id_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -82,14 +317,14 @@ namespace BenGrewell.Tgams {
       return new PingRequest(this);
     }
 
-    /// <summary>Field number for the "request_id" field.</summary>
-    public const int RequestIdFieldNumber = 1;
-    private ulong requestId_;
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ulong RequestId {
-      get { return requestId_; }
+    public ulong Id {
+      get { return id_; }
       set {
-        requestId_ = value;
+        id_ = value;
       }
     }
 
@@ -106,14 +341,14 @@ namespace BenGrewell.Tgams {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (RequestId != other.RequestId) return false;
+      if (Id != other.Id) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (RequestId != 0UL) hash ^= RequestId.GetHashCode();
+      if (Id != 0UL) hash ^= Id.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -127,9 +362,9 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (RequestId != 0UL) {
+      if (Id != 0UL) {
         output.WriteRawTag(8);
-        output.WriteUInt64(RequestId);
+        output.WriteUInt64(Id);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -139,8 +374,8 @@ namespace BenGrewell.Tgams {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (RequestId != 0UL) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestId);
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -153,8 +388,8 @@ namespace BenGrewell.Tgams {
       if (other == null) {
         return;
       }
-      if (other.RequestId != 0UL) {
-        RequestId = other.RequestId;
+      if (other.Id != 0UL) {
+        Id = other.Id;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -168,7 +403,7 @@ namespace BenGrewell.Tgams {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            RequestId = input.ReadUInt64();
+            Id = input.ReadUInt64();
             break;
           }
         }
@@ -177,6 +412,9 @@ namespace BenGrewell.Tgams {
 
   }
 
+  /// <summary>
+  /// PingResponse sends a response to a ping request
+  /// </summary>
   public sealed partial class PingResponse : pb::IMessage<PingResponse> {
     private static readonly pb::MessageParser<PingResponse> _parser = new pb::MessageParser<PingResponse>(() => new PingResponse());
     private pb::UnknownFieldSet _unknownFields;
@@ -185,7 +423,7 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[1]; }
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -202,7 +440,7 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PingResponse(PingResponse other) : this() {
-      responseId_ = other.responseId_;
+      id_ = other.id_;
       requestId_ = other.requestId_;
       status_ = other.status_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -213,14 +451,14 @@ namespace BenGrewell.Tgams {
       return new PingResponse(this);
     }
 
-    /// <summary>Field number for the "response_id" field.</summary>
-    public const int ResponseIdFieldNumber = 1;
-    private ulong responseId_;
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ulong ResponseId {
-      get { return responseId_; }
+    public ulong Id {
+      get { return id_; }
       set {
-        responseId_ = value;
+        id_ = value;
       }
     }
 
@@ -259,7 +497,7 @@ namespace BenGrewell.Tgams {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (ResponseId != other.ResponseId) return false;
+      if (Id != other.Id) return false;
       if (RequestId != other.RequestId) return false;
       if (Status != other.Status) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -268,7 +506,7 @@ namespace BenGrewell.Tgams {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (ResponseId != 0UL) hash ^= ResponseId.GetHashCode();
+      if (Id != 0UL) hash ^= Id.GetHashCode();
       if (RequestId != 0UL) hash ^= RequestId.GetHashCode();
       if (Status != 0) hash ^= Status.GetHashCode();
       if (_unknownFields != null) {
@@ -284,9 +522,9 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (ResponseId != 0UL) {
+      if (Id != 0UL) {
         output.WriteRawTag(8);
-        output.WriteUInt64(ResponseId);
+        output.WriteUInt64(Id);
       }
       if (RequestId != 0UL) {
         output.WriteRawTag(16);
@@ -304,8 +542,8 @@ namespace BenGrewell.Tgams {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (ResponseId != 0UL) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(ResponseId);
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
       }
       if (RequestId != 0UL) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestId);
@@ -324,8 +562,8 @@ namespace BenGrewell.Tgams {
       if (other == null) {
         return;
       }
-      if (other.ResponseId != 0UL) {
-        ResponseId = other.ResponseId;
+      if (other.Id != 0UL) {
+        Id = other.Id;
       }
       if (other.RequestId != 0UL) {
         RequestId = other.RequestId;
@@ -345,7 +583,7 @@ namespace BenGrewell.Tgams {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            ResponseId = input.ReadUInt64();
+            Id = input.ReadUInt64();
             break;
           }
           case 16: {
@@ -365,12 +603,13 @@ namespace BenGrewell.Tgams {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static partial class Types {
       public enum PingStatus {
-        [pbr::OriginalName("OK")] Ok = 0,
-        [pbr::OriginalName("STARTING")] Starting = 1,
-        [pbr::OriginalName("STOPPING")] Stopping = 2,
-        [pbr::OriginalName("READY")] Ready = 3,
-        [pbr::OriginalName("BUSY")] Busy = 4,
-        [pbr::OriginalName("ERROR")] Error = 5,
+        [pbr::OriginalName("UNKNOWN")] Unknown = 0,
+        [pbr::OriginalName("OK")] Ok = 1,
+        [pbr::OriginalName("STARTING")] Starting = 2,
+        [pbr::OriginalName("STOPPING")] Stopping = 3,
+        [pbr::OriginalName("READY")] Ready = 4,
+        [pbr::OriginalName("BUSY")] Busy = 5,
+        [pbr::OriginalName("ERROR")] Error = 6,
       }
 
     }
@@ -378,6 +617,9 @@ namespace BenGrewell.Tgams {
 
   }
 
+  /// <summary>
+  /// TimeSyncRequest sends a request to start a TimeSync probe
+  /// </summary>
   public sealed partial class TimeSyncRequest : pb::IMessage<TimeSyncRequest> {
     private static readonly pb::MessageParser<TimeSyncRequest> _parser = new pb::MessageParser<TimeSyncRequest>(() => new TimeSyncRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -386,7 +628,7 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[2]; }
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -403,7 +645,7 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public TimeSyncRequest(TimeSyncRequest other) : this() {
-      requestId_ = other.requestId_;
+      id_ = other.id_;
       t1_ = other.t1_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -413,14 +655,14 @@ namespace BenGrewell.Tgams {
       return new TimeSyncRequest(this);
     }
 
-    /// <summary>Field number for the "request_id" field.</summary>
-    public const int RequestIdFieldNumber = 1;
-    private ulong requestId_;
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ulong RequestId {
-      get { return requestId_; }
+    public ulong Id {
+      get { return id_; }
       set {
-        requestId_ = value;
+        id_ = value;
       }
     }
 
@@ -448,7 +690,7 @@ namespace BenGrewell.Tgams {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (RequestId != other.RequestId) return false;
+      if (Id != other.Id) return false;
       if (T1 != other.T1) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -456,7 +698,7 @@ namespace BenGrewell.Tgams {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (RequestId != 0UL) hash ^= RequestId.GetHashCode();
+      if (Id != 0UL) hash ^= Id.GetHashCode();
       if (T1 != 0L) hash ^= T1.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -471,9 +713,9 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (RequestId != 0UL) {
+      if (Id != 0UL) {
         output.WriteRawTag(8);
-        output.WriteUInt64(RequestId);
+        output.WriteUInt64(Id);
       }
       if (T1 != 0L) {
         output.WriteRawTag(16);
@@ -487,8 +729,8 @@ namespace BenGrewell.Tgams {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (RequestId != 0UL) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestId);
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
       }
       if (T1 != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(T1);
@@ -504,8 +746,8 @@ namespace BenGrewell.Tgams {
       if (other == null) {
         return;
       }
-      if (other.RequestId != 0UL) {
-        RequestId = other.RequestId;
+      if (other.Id != 0UL) {
+        Id = other.Id;
       }
       if (other.T1 != 0L) {
         T1 = other.T1;
@@ -522,7 +764,7 @@ namespace BenGrewell.Tgams {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            RequestId = input.ReadUInt64();
+            Id = input.ReadUInt64();
             break;
           }
           case 16: {
@@ -535,6 +777,9 @@ namespace BenGrewell.Tgams {
 
   }
 
+  /// <summary>
+  /// TimeSyncResponse sends a response to a TimeSync request
+  /// </summary>
   public sealed partial class TimeSyncResponse : pb::IMessage<TimeSyncResponse> {
     private static readonly pb::MessageParser<TimeSyncResponse> _parser = new pb::MessageParser<TimeSyncResponse>(() => new TimeSyncResponse());
     private pb::UnknownFieldSet _unknownFields;
@@ -543,7 +788,7 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[3]; }
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -560,7 +805,7 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public TimeSyncResponse(TimeSyncResponse other) : this() {
-      responseId_ = other.responseId_;
+      id_ = other.id_;
       requestId_ = other.requestId_;
       t1_ = other.t1_;
       t2_ = other.t2_;
@@ -574,14 +819,14 @@ namespace BenGrewell.Tgams {
       return new TimeSyncResponse(this);
     }
 
-    /// <summary>Field number for the "response_id" field.</summary>
-    public const int ResponseIdFieldNumber = 1;
-    private ulong responseId_;
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ulong ResponseId {
-      get { return responseId_; }
+    public ulong Id {
+      get { return id_; }
       set {
-        responseId_ = value;
+        id_ = value;
       }
     }
 
@@ -653,7 +898,7 @@ namespace BenGrewell.Tgams {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (ResponseId != other.ResponseId) return false;
+      if (Id != other.Id) return false;
       if (RequestId != other.RequestId) return false;
       if (T1 != other.T1) return false;
       if (T2 != other.T2) return false;
@@ -665,7 +910,7 @@ namespace BenGrewell.Tgams {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (ResponseId != 0UL) hash ^= ResponseId.GetHashCode();
+      if (Id != 0UL) hash ^= Id.GetHashCode();
       if (RequestId != 0UL) hash ^= RequestId.GetHashCode();
       if (T1 != 0L) hash ^= T1.GetHashCode();
       if (T2 != 0L) hash ^= T2.GetHashCode();
@@ -684,9 +929,9 @@ namespace BenGrewell.Tgams {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (ResponseId != 0UL) {
+      if (Id != 0UL) {
         output.WriteRawTag(8);
-        output.WriteUInt64(ResponseId);
+        output.WriteUInt64(Id);
       }
       if (RequestId != 0UL) {
         output.WriteRawTag(16);
@@ -716,8 +961,8 @@ namespace BenGrewell.Tgams {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (ResponseId != 0UL) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(ResponseId);
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
       }
       if (RequestId != 0UL) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestId);
@@ -745,8 +990,8 @@ namespace BenGrewell.Tgams {
       if (other == null) {
         return;
       }
-      if (other.ResponseId != 0UL) {
-        ResponseId = other.ResponseId;
+      if (other.Id != 0UL) {
+        Id = other.Id;
       }
       if (other.RequestId != 0UL) {
         RequestId = other.RequestId;
@@ -775,7 +1020,7 @@ namespace BenGrewell.Tgams {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            ResponseId = input.ReadUInt64();
+            Id = input.ReadUInt64();
             break;
           }
           case 16: {
@@ -796,6 +1041,1302 @@ namespace BenGrewell.Tgams {
           }
           case 104: {
             T4 = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// Telemetry is a wrapper around a single telemetry collection request
+  /// </summary>
+  public sealed partial class Telemetry : pb::IMessage<Telemetry> {
+    private static readonly pb::MessageParser<Telemetry> _parser = new pb::MessageParser<Telemetry>(() => new Telemetry());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Telemetry> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Telemetry() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Telemetry(Telemetry other) : this() {
+      type_ = other.type_;
+      interval_ = other.interval_;
+      session_ = other.session_;
+      params_ = other.params_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Telemetry Clone() {
+      return new Telemetry(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private global::BenGrewell.Tgams.TelemetryType type_ = 0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::BenGrewell.Tgams.TelemetryType Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "interval" field.</summary>
+    public const int IntervalFieldNumber = 2;
+    private uint interval_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint Interval {
+      get { return interval_; }
+      set {
+        interval_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "session" field.</summary>
+    public const int SessionFieldNumber = 10;
+    private string session_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Session {
+      get { return session_; }
+      set {
+        session_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "params" field.</summary>
+    public const int ParamsFieldNumber = 11;
+    private static readonly pbc::MapField<string, string>.Codec _map_params_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForString(18), 90);
+    private readonly pbc::MapField<string, string> params_ = new pbc::MapField<string, string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<string, string> Params {
+      get { return params_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Telemetry);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Telemetry other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (Interval != other.Interval) return false;
+      if (Session != other.Session) return false;
+      if (!Params.Equals(other.Params)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type != 0) hash ^= Type.GetHashCode();
+      if (Interval != 0) hash ^= Interval.GetHashCode();
+      if (Session.Length != 0) hash ^= Session.GetHashCode();
+      hash ^= Params.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type != 0) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      if (Interval != 0) {
+        output.WriteRawTag(16);
+        output.WriteUInt32(Interval);
+      }
+      if (Session.Length != 0) {
+        output.WriteRawTag(82);
+        output.WriteString(Session);
+      }
+      params_.WriteTo(output, _map_params_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      if (Interval != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Interval);
+      }
+      if (Session.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Session);
+      }
+      size += params_.CalculateSize(_map_params_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Telemetry other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type != 0) {
+        Type = other.Type;
+      }
+      if (other.Interval != 0) {
+        Interval = other.Interval;
+      }
+      if (other.Session.Length != 0) {
+        Session = other.Session;
+      }
+      params_.Add(other.params_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            type_ = (global::BenGrewell.Tgams.TelemetryType) input.ReadEnum();
+            break;
+          }
+          case 16: {
+            Interval = input.ReadUInt32();
+            break;
+          }
+          case 82: {
+            Session = input.ReadString();
+            break;
+          }
+          case 90: {
+            params_.AddEntriesFrom(input, _map_params_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// StartTelemetryRequest sends a request to start gathering telemetry
+  /// </summary>
+  public sealed partial class StartTelemetryRequest : pb::IMessage<StartTelemetryRequest> {
+    private static readonly pb::MessageParser<StartTelemetryRequest> _parser = new pb::MessageParser<StartTelemetryRequest>(() => new StartTelemetryRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<StartTelemetryRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StartTelemetryRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StartTelemetryRequest(StartTelemetryRequest other) : this() {
+      id_ = other.id_;
+      triggerType_ = other.triggerType_;
+      triggerValue_ = other.triggerValue_;
+      outputs_ = other.outputs_.Clone();
+      telemetries_ = other.telemetries_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StartTelemetryRequest Clone() {
+      return new StartTelemetryRequest(this);
+    }
+
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong Id {
+      get { return id_; }
+      set {
+        id_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "trigger_type" field.</summary>
+    public const int TriggerTypeFieldNumber = 2;
+    private global::BenGrewell.Tgams.TriggerType triggerType_ = 0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::BenGrewell.Tgams.TriggerType TriggerType {
+      get { return triggerType_; }
+      set {
+        triggerType_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "trigger_value" field.</summary>
+    public const int TriggerValueFieldNumber = 3;
+    private long triggerValue_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long TriggerValue {
+      get { return triggerValue_; }
+      set {
+        triggerValue_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "outputs" field.</summary>
+    public const int OutputsFieldNumber = 4;
+    private static readonly pb::FieldCodec<global::BenGrewell.Tgams.Output> _repeated_outputs_codec
+        = pb::FieldCodec.ForMessage(34, global::BenGrewell.Tgams.Output.Parser);
+    private readonly pbc::RepeatedField<global::BenGrewell.Tgams.Output> outputs_ = new pbc::RepeatedField<global::BenGrewell.Tgams.Output>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::BenGrewell.Tgams.Output> Outputs {
+      get { return outputs_; }
+    }
+
+    /// <summary>Field number for the "telemetries" field.</summary>
+    public const int TelemetriesFieldNumber = 10;
+    private static readonly pb::FieldCodec<global::BenGrewell.Tgams.Telemetry> _repeated_telemetries_codec
+        = pb::FieldCodec.ForMessage(82, global::BenGrewell.Tgams.Telemetry.Parser);
+    private readonly pbc::RepeatedField<global::BenGrewell.Tgams.Telemetry> telemetries_ = new pbc::RepeatedField<global::BenGrewell.Tgams.Telemetry>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::BenGrewell.Tgams.Telemetry> Telemetries {
+      get { return telemetries_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as StartTelemetryRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(StartTelemetryRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Id != other.Id) return false;
+      if (TriggerType != other.TriggerType) return false;
+      if (TriggerValue != other.TriggerValue) return false;
+      if(!outputs_.Equals(other.outputs_)) return false;
+      if(!telemetries_.Equals(other.telemetries_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Id != 0UL) hash ^= Id.GetHashCode();
+      if (TriggerType != 0) hash ^= TriggerType.GetHashCode();
+      if (TriggerValue != 0L) hash ^= TriggerValue.GetHashCode();
+      hash ^= outputs_.GetHashCode();
+      hash ^= telemetries_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Id != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(Id);
+      }
+      if (TriggerType != 0) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) TriggerType);
+      }
+      if (TriggerValue != 0L) {
+        output.WriteRawTag(24);
+        output.WriteInt64(TriggerValue);
+      }
+      outputs_.WriteTo(output, _repeated_outputs_codec);
+      telemetries_.WriteTo(output, _repeated_telemetries_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+      }
+      if (TriggerType != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) TriggerType);
+      }
+      if (TriggerValue != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(TriggerValue);
+      }
+      size += outputs_.CalculateSize(_repeated_outputs_codec);
+      size += telemetries_.CalculateSize(_repeated_telemetries_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(StartTelemetryRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Id != 0UL) {
+        Id = other.Id;
+      }
+      if (other.TriggerType != 0) {
+        TriggerType = other.TriggerType;
+      }
+      if (other.TriggerValue != 0L) {
+        TriggerValue = other.TriggerValue;
+      }
+      outputs_.Add(other.outputs_);
+      telemetries_.Add(other.telemetries_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Id = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            triggerType_ = (global::BenGrewell.Tgams.TriggerType) input.ReadEnum();
+            break;
+          }
+          case 24: {
+            TriggerValue = input.ReadInt64();
+            break;
+          }
+          case 34: {
+            outputs_.AddEntriesFrom(input, _repeated_outputs_codec);
+            break;
+          }
+          case 82: {
+            telemetries_.AddEntriesFrom(input, _repeated_telemetries_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// StartTelemetryResponse sends a response to a start telemetry request
+  /// </summary>
+  public sealed partial class StartTelemetryResponse : pb::IMessage<StartTelemetryResponse> {
+    private static readonly pb::MessageParser<StartTelemetryResponse> _parser = new pb::MessageParser<StartTelemetryResponse>(() => new StartTelemetryResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<StartTelemetryResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StartTelemetryResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StartTelemetryResponse(StartTelemetryResponse other) : this() {
+      id_ = other.id_;
+      requestId_ = other.requestId_;
+      telemetries_ = other.telemetries_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StartTelemetryResponse Clone() {
+      return new StartTelemetryResponse(this);
+    }
+
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong Id {
+      get { return id_; }
+      set {
+        id_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "request_id" field.</summary>
+    public const int RequestIdFieldNumber = 2;
+    private ulong requestId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong RequestId {
+      get { return requestId_; }
+      set {
+        requestId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "telemetries" field.</summary>
+    public const int TelemetriesFieldNumber = 10;
+    private static readonly pb::FieldCodec<global::BenGrewell.Tgams.Telemetry> _repeated_telemetries_codec
+        = pb::FieldCodec.ForMessage(82, global::BenGrewell.Tgams.Telemetry.Parser);
+    private readonly pbc::RepeatedField<global::BenGrewell.Tgams.Telemetry> telemetries_ = new pbc::RepeatedField<global::BenGrewell.Tgams.Telemetry>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::BenGrewell.Tgams.Telemetry> Telemetries {
+      get { return telemetries_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as StartTelemetryResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(StartTelemetryResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Id != other.Id) return false;
+      if (RequestId != other.RequestId) return false;
+      if(!telemetries_.Equals(other.telemetries_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Id != 0UL) hash ^= Id.GetHashCode();
+      if (RequestId != 0UL) hash ^= RequestId.GetHashCode();
+      hash ^= telemetries_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Id != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(Id);
+      }
+      if (RequestId != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(RequestId);
+      }
+      telemetries_.WriteTo(output, _repeated_telemetries_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+      }
+      if (RequestId != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestId);
+      }
+      size += telemetries_.CalculateSize(_repeated_telemetries_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(StartTelemetryResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Id != 0UL) {
+        Id = other.Id;
+      }
+      if (other.RequestId != 0UL) {
+        RequestId = other.RequestId;
+      }
+      telemetries_.Add(other.telemetries_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Id = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            RequestId = input.ReadUInt64();
+            break;
+          }
+          case 82: {
+            telemetries_.AddEntriesFrom(input, _repeated_telemetries_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// GetTelemetryRequest sends a request to retrieve the telemetry data in json format
+  /// </summary>
+  public sealed partial class GetTelemetryRequest : pb::IMessage<GetTelemetryRequest> {
+    private static readonly pb::MessageParser<GetTelemetryRequest> _parser = new pb::MessageParser<GetTelemetryRequest>(() => new GetTelemetryRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GetTelemetryRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetTelemetryRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetTelemetryRequest(GetTelemetryRequest other) : this() {
+      id_ = other.id_;
+      session_ = other.session_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetTelemetryRequest Clone() {
+      return new GetTelemetryRequest(this);
+    }
+
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong Id {
+      get { return id_; }
+      set {
+        id_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "session" field.</summary>
+    public const int SessionFieldNumber = 2;
+    private string session_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Session {
+      get { return session_; }
+      set {
+        session_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetTelemetryRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetTelemetryRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Id != other.Id) return false;
+      if (Session != other.Session) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Id != 0UL) hash ^= Id.GetHashCode();
+      if (Session.Length != 0) hash ^= Session.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Id != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(Id);
+      }
+      if (Session.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Session);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+      }
+      if (Session.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Session);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetTelemetryRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Id != 0UL) {
+        Id = other.Id;
+      }
+      if (other.Session.Length != 0) {
+        Session = other.Session;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Id = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Session = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// GetTelemetryResponse sends a response to a get telemetry request
+  /// </summary>
+  public sealed partial class GetTelemetryResponse : pb::IMessage<GetTelemetryResponse> {
+    private static readonly pb::MessageParser<GetTelemetryResponse> _parser = new pb::MessageParser<GetTelemetryResponse>(() => new GetTelemetryResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GetTelemetryResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetTelemetryResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetTelemetryResponse(GetTelemetryResponse other) : this() {
+      id_ = other.id_;
+      requestId_ = other.requestId_;
+      values_ = other.values_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetTelemetryResponse Clone() {
+      return new GetTelemetryResponse(this);
+    }
+
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong Id {
+      get { return id_; }
+      set {
+        id_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "request_id" field.</summary>
+    public const int RequestIdFieldNumber = 2;
+    private ulong requestId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong RequestId {
+      get { return requestId_; }
+      set {
+        requestId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "values" field.</summary>
+    public const int ValuesFieldNumber = 10;
+    private static readonly pb::FieldCodec<string> _repeated_values_codec
+        = pb::FieldCodec.ForString(82);
+    private readonly pbc::RepeatedField<string> values_ = new pbc::RepeatedField<string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> Values {
+      get { return values_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetTelemetryResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetTelemetryResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Id != other.Id) return false;
+      if (RequestId != other.RequestId) return false;
+      if(!values_.Equals(other.values_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Id != 0UL) hash ^= Id.GetHashCode();
+      if (RequestId != 0UL) hash ^= RequestId.GetHashCode();
+      hash ^= values_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Id != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(Id);
+      }
+      if (RequestId != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(RequestId);
+      }
+      values_.WriteTo(output, _repeated_values_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+      }
+      if (RequestId != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestId);
+      }
+      size += values_.CalculateSize(_repeated_values_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetTelemetryResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Id != 0UL) {
+        Id = other.Id;
+      }
+      if (other.RequestId != 0UL) {
+        RequestId = other.RequestId;
+      }
+      values_.Add(other.values_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Id = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            RequestId = input.ReadUInt64();
+            break;
+          }
+          case 82: {
+            values_.AddEntriesFrom(input, _repeated_values_codec);
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// StopTelemetryRequest sends a request to stop gathering telemetry
+  /// </summary>
+  public sealed partial class StopTelemetryRequest : pb::IMessage<StopTelemetryRequest> {
+    private static readonly pb::MessageParser<StopTelemetryRequest> _parser = new pb::MessageParser<StopTelemetryRequest>(() => new StopTelemetryRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<StopTelemetryRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StopTelemetryRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StopTelemetryRequest(StopTelemetryRequest other) : this() {
+      id_ = other.id_;
+      session_ = other.session_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StopTelemetryRequest Clone() {
+      return new StopTelemetryRequest(this);
+    }
+
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong Id {
+      get { return id_; }
+      set {
+        id_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "session" field.</summary>
+    public const int SessionFieldNumber = 2;
+    private string session_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Session {
+      get { return session_; }
+      set {
+        session_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as StopTelemetryRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(StopTelemetryRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Id != other.Id) return false;
+      if (Session != other.Session) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Id != 0UL) hash ^= Id.GetHashCode();
+      if (Session.Length != 0) hash ^= Session.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Id != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(Id);
+      }
+      if (Session.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Session);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+      }
+      if (Session.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Session);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(StopTelemetryRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Id != 0UL) {
+        Id = other.Id;
+      }
+      if (other.Session.Length != 0) {
+        Session = other.Session;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Id = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Session = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// StopTelemetryResponse sends a response to a stop telemetry request along with the telemetry data
+  /// </summary>
+  public sealed partial class StopTelemetryResponse : pb::IMessage<StopTelemetryResponse> {
+    private static readonly pb::MessageParser<StopTelemetryResponse> _parser = new pb::MessageParser<StopTelemetryResponse>(() => new StopTelemetryResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<StopTelemetryResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::BenGrewell.Tgams.TgamsReflection.Descriptor.MessageTypes[11]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StopTelemetryResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StopTelemetryResponse(StopTelemetryResponse other) : this() {
+      id_ = other.id_;
+      requestId_ = other.requestId_;
+      values_ = other.values_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public StopTelemetryResponse Clone() {
+      return new StopTelemetryResponse(this);
+    }
+
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
+    private ulong id_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong Id {
+      get { return id_; }
+      set {
+        id_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "request_id" field.</summary>
+    public const int RequestIdFieldNumber = 2;
+    private ulong requestId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ulong RequestId {
+      get { return requestId_; }
+      set {
+        requestId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "values" field.</summary>
+    public const int ValuesFieldNumber = 10;
+    private static readonly pb::FieldCodec<string> _repeated_values_codec
+        = pb::FieldCodec.ForString(82);
+    private readonly pbc::RepeatedField<string> values_ = new pbc::RepeatedField<string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> Values {
+      get { return values_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as StopTelemetryResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(StopTelemetryResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Id != other.Id) return false;
+      if (RequestId != other.RequestId) return false;
+      if(!values_.Equals(other.values_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Id != 0UL) hash ^= Id.GetHashCode();
+      if (RequestId != 0UL) hash ^= RequestId.GetHashCode();
+      hash ^= values_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Id != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(Id);
+      }
+      if (RequestId != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(RequestId);
+      }
+      values_.WriteTo(output, _repeated_values_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Id != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(Id);
+      }
+      if (RequestId != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestId);
+      }
+      size += values_.CalculateSize(_repeated_values_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(StopTelemetryResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Id != 0UL) {
+        Id = other.Id;
+      }
+      if (other.RequestId != 0UL) {
+        RequestId = other.RequestId;
+      }
+      values_.Add(other.values_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Id = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            RequestId = input.ReadUInt64();
+            break;
+          }
+          case 82: {
+            values_.AddEntriesFrom(input, _repeated_values_codec);
             break;
           }
         }

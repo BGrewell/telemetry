@@ -9,6 +9,8 @@ package _go
 import (
 	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -22,34 +24,202 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// TriggerType is an enum of the various types of triggers that can be used by telemetry items
+type TriggerType int32
+
+const (
+	TriggerType_TRIGGER_UNKNOWN  TriggerType = 0
+	TriggerType_TRIGGER_INSTANT  TriggerType = 1
+	TriggerType_TRIGGER_ABSOLUTE TriggerType = 2
+	TriggerType_TRIGGER_RELATIVE TriggerType = 3
+	TriggerType_TRIGGER_START    TriggerType = 4
+)
+
+// Enum value maps for TriggerType.
+var (
+	TriggerType_name = map[int32]string{
+		0: "TRIGGER_UNKNOWN",
+		1: "TRIGGER_INSTANT",
+		2: "TRIGGER_ABSOLUTE",
+		3: "TRIGGER_RELATIVE",
+		4: "TRIGGER_START",
+	}
+	TriggerType_value = map[string]int32{
+		"TRIGGER_UNKNOWN":  0,
+		"TRIGGER_INSTANT":  1,
+		"TRIGGER_ABSOLUTE": 2,
+		"TRIGGER_RELATIVE": 3,
+		"TRIGGER_START":    4,
+	}
+)
+
+func (x TriggerType) Enum() *TriggerType {
+	p := new(TriggerType)
+	*p = x
+	return p
+}
+
+func (x TriggerType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TriggerType) Descriptor() protoreflect.EnumDescriptor {
+	return file_tgams_proto_enumTypes[0].Descriptor()
+}
+
+func (TriggerType) Type() protoreflect.EnumType {
+	return &file_tgams_proto_enumTypes[0]
+}
+
+func (x TriggerType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TriggerType.Descriptor instead.
+func (TriggerType) EnumDescriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{0}
+}
+
+// OutputType is an enum of the various types of output that telemetry items can support
+type OutputType int32
+
+const (
+	OutputType_OUTPUT_UNKNOWN OutputType = 0
+	OutputType_OUTPUT_PULL    OutputType = 1
+	OutputType_OUTPUT_FILE    OutputType = 2
+	OutputType_OUTPUT_SOCKET  OutputType = 3
+	OutputType_OUTPUT_PIPE    OutputType = 4
+)
+
+// Enum value maps for OutputType.
+var (
+	OutputType_name = map[int32]string{
+		0: "OUTPUT_UNKNOWN",
+		1: "OUTPUT_PULL",
+		2: "OUTPUT_FILE",
+		3: "OUTPUT_SOCKET",
+		4: "OUTPUT_PIPE",
+	}
+	OutputType_value = map[string]int32{
+		"OUTPUT_UNKNOWN": 0,
+		"OUTPUT_PULL":    1,
+		"OUTPUT_FILE":    2,
+		"OUTPUT_SOCKET":  3,
+		"OUTPUT_PIPE":    4,
+	}
+)
+
+func (x OutputType) Enum() *OutputType {
+	p := new(OutputType)
+	*p = x
+	return p
+}
+
+func (x OutputType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OutputType) Descriptor() protoreflect.EnumDescriptor {
+	return file_tgams_proto_enumTypes[1].Descriptor()
+}
+
+func (OutputType) Type() protoreflect.EnumType {
+	return &file_tgams_proto_enumTypes[1]
+}
+
+func (x OutputType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OutputType.Descriptor instead.
+func (OutputType) EnumDescriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{1}
+}
+
+// TelemetryType is an enum that contains the various telemetry types
+type TelemetryType int32
+
+const (
+	TelemetryType_TELEMETRY_UNKNOWN    TelemetryType = 0
+	TelemetryType_TELEMETRY_THROUGHPUT TelemetryType = 1
+	TelemetryType_TELEMETRY_LATENCY    TelemetryType = 2
+	TelemetryType_TELEMETRY_CPU        TelemetryType = 3
+)
+
+// Enum value maps for TelemetryType.
+var (
+	TelemetryType_name = map[int32]string{
+		0: "TELEMETRY_UNKNOWN",
+		1: "TELEMETRY_THROUGHPUT",
+		2: "TELEMETRY_LATENCY",
+		3: "TELEMETRY_CPU",
+	}
+	TelemetryType_value = map[string]int32{
+		"TELEMETRY_UNKNOWN":    0,
+		"TELEMETRY_THROUGHPUT": 1,
+		"TELEMETRY_LATENCY":    2,
+		"TELEMETRY_CPU":        3,
+	}
+)
+
+func (x TelemetryType) Enum() *TelemetryType {
+	p := new(TelemetryType)
+	*p = x
+	return p
+}
+
+func (x TelemetryType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TelemetryType) Descriptor() protoreflect.EnumDescriptor {
+	return file_tgams_proto_enumTypes[2].Descriptor()
+}
+
+func (TelemetryType) Type() protoreflect.EnumType {
+	return &file_tgams_proto_enumTypes[2]
+}
+
+func (x TelemetryType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TelemetryType.Descriptor instead.
+func (TelemetryType) EnumDescriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{2}
+}
+
 type PingResponse_PingStatus int32
 
 const (
-	PingResponse_OK       PingResponse_PingStatus = 0
-	PingResponse_STARTING PingResponse_PingStatus = 1
-	PingResponse_STOPPING PingResponse_PingStatus = 2
-	PingResponse_READY    PingResponse_PingStatus = 3
-	PingResponse_BUSY     PingResponse_PingStatus = 4
-	PingResponse_ERROR    PingResponse_PingStatus = 5
+	PingResponse_UNKNOWN  PingResponse_PingStatus = 0
+	PingResponse_OK       PingResponse_PingStatus = 1
+	PingResponse_STARTING PingResponse_PingStatus = 2
+	PingResponse_STOPPING PingResponse_PingStatus = 3
+	PingResponse_READY    PingResponse_PingStatus = 4
+	PingResponse_BUSY     PingResponse_PingStatus = 5
+	PingResponse_ERROR    PingResponse_PingStatus = 6
 )
 
 // Enum value maps for PingResponse_PingStatus.
 var (
 	PingResponse_PingStatus_name = map[int32]string{
-		0: "OK",
-		1: "STARTING",
-		2: "STOPPING",
-		3: "READY",
-		4: "BUSY",
-		5: "ERROR",
+		0: "UNKNOWN",
+		1: "OK",
+		2: "STARTING",
+		3: "STOPPING",
+		4: "READY",
+		5: "BUSY",
+		6: "ERROR",
 	}
 	PingResponse_PingStatus_value = map[string]int32{
-		"OK":       0,
-		"STARTING": 1,
-		"STOPPING": 2,
-		"READY":    3,
-		"BUSY":     4,
-		"ERROR":    5,
+		"UNKNOWN":  0,
+		"OK":       1,
+		"STARTING": 2,
+		"STOPPING": 3,
+		"READY":    4,
+		"BUSY":     5,
+		"ERROR":    6,
 	}
 )
 
@@ -64,11 +234,11 @@ func (x PingResponse_PingStatus) String() string {
 }
 
 func (PingResponse_PingStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_tgams_proto_enumTypes[0].Descriptor()
+	return file_tgams_proto_enumTypes[3].Descriptor()
 }
 
 func (PingResponse_PingStatus) Type() protoreflect.EnumType {
-	return &file_tgams_proto_enumTypes[0]
+	return &file_tgams_proto_enumTypes[3]
 }
 
 func (x PingResponse_PingStatus) Number() protoreflect.EnumNumber {
@@ -77,21 +247,78 @@ func (x PingResponse_PingStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PingResponse_PingStatus.Descriptor instead.
 func (PingResponse_PingStatus) EnumDescriptor() ([]byte, []int) {
-	return file_tgams_proto_rawDescGZIP(), []int{1, 0}
+	return file_tgams_proto_rawDescGZIP(), []int{2, 0}
 }
 
+// Output object holds a specific output type and value
+type Output struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Type  OutputType `protobuf:"varint,1,opt,name=type,proto3,enum=OutputType" json:"type,omitempty"`
+	Value string     `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *Output) Reset() {
+	*x = Output{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tgams_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Output) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Output) ProtoMessage() {}
+
+func (x *Output) ProtoReflect() protoreflect.Message {
+	mi := &file_tgams_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Output.ProtoReflect.Descriptor instead.
+func (*Output) Descriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Output) GetType() OutputType {
+	if x != nil {
+		return x.Type
+	}
+	return OutputType_OUTPUT_UNKNOWN
+}
+
+func (x *Output) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+// PingRequest sends a ping to a remote host
 type PingRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RequestId uint64 `protobuf:"varint,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *PingRequest) Reset() {
 	*x = PingRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tgams_proto_msgTypes[0]
+		mi := &file_tgams_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -104,7 +331,7 @@ func (x *PingRequest) String() string {
 func (*PingRequest) ProtoMessage() {}
 
 func (x *PingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tgams_proto_msgTypes[0]
+	mi := &file_tgams_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -117,30 +344,31 @@ func (x *PingRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingRequest.ProtoReflect.Descriptor instead.
 func (*PingRequest) Descriptor() ([]byte, []int) {
-	return file_tgams_proto_rawDescGZIP(), []int{0}
+	return file_tgams_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PingRequest) GetRequestId() uint64 {
+func (x *PingRequest) GetId() uint64 {
 	if x != nil {
-		return x.RequestId
+		return x.Id
 	}
 	return 0
 }
 
+// PingResponse sends a response to a ping request
 type PingResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ResponseId uint64                  `protobuf:"varint,1,opt,name=response_id,json=responseId,proto3" json:"response_id,omitempty"`
-	RequestId  uint64                  `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Status     PingResponse_PingStatus `protobuf:"varint,3,opt,name=status,proto3,enum=PingResponse_PingStatus" json:"status,omitempty"`
+	Id        uint64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	RequestId uint64                  `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Status    PingResponse_PingStatus `protobuf:"varint,3,opt,name=status,proto3,enum=PingResponse_PingStatus" json:"status,omitempty"`
 }
 
 func (x *PingResponse) Reset() {
 	*x = PingResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tgams_proto_msgTypes[1]
+		mi := &file_tgams_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -153,7 +381,7 @@ func (x *PingResponse) String() string {
 func (*PingResponse) ProtoMessage() {}
 
 func (x *PingResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tgams_proto_msgTypes[1]
+	mi := &file_tgams_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -166,12 +394,12 @@ func (x *PingResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingResponse.ProtoReflect.Descriptor instead.
 func (*PingResponse) Descriptor() ([]byte, []int) {
-	return file_tgams_proto_rawDescGZIP(), []int{1}
+	return file_tgams_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *PingResponse) GetResponseId() uint64 {
+func (x *PingResponse) GetId() uint64 {
 	if x != nil {
-		return x.ResponseId
+		return x.Id
 	}
 	return 0
 }
@@ -187,22 +415,23 @@ func (x *PingResponse) GetStatus() PingResponse_PingStatus {
 	if x != nil {
 		return x.Status
 	}
-	return PingResponse_OK
+	return PingResponse_UNKNOWN
 }
 
+// TimeSyncRequest sends a request to start a TimeSync probe
 type TimeSyncRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	RequestId uint64 `protobuf:"varint,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	T1        int64  `protobuf:"varint,2,opt,name=t1,proto3" json:"t1,omitempty"`
+	Id uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	T1 int64  `protobuf:"varint,2,opt,name=t1,proto3" json:"t1,omitempty"`
 }
 
 func (x *TimeSyncRequest) Reset() {
 	*x = TimeSyncRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tgams_proto_msgTypes[2]
+		mi := &file_tgams_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -215,7 +444,7 @@ func (x *TimeSyncRequest) String() string {
 func (*TimeSyncRequest) ProtoMessage() {}
 
 func (x *TimeSyncRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tgams_proto_msgTypes[2]
+	mi := &file_tgams_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -228,12 +457,12 @@ func (x *TimeSyncRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimeSyncRequest.ProtoReflect.Descriptor instead.
 func (*TimeSyncRequest) Descriptor() ([]byte, []int) {
-	return file_tgams_proto_rawDescGZIP(), []int{2}
+	return file_tgams_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *TimeSyncRequest) GetRequestId() uint64 {
+func (x *TimeSyncRequest) GetId() uint64 {
 	if x != nil {
-		return x.RequestId
+		return x.Id
 	}
 	return 0
 }
@@ -245,23 +474,24 @@ func (x *TimeSyncRequest) GetT1() int64 {
 	return 0
 }
 
+// TimeSyncResponse sends a response to a TimeSync request
 type TimeSyncResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ResponseId uint64 `protobuf:"varint,1,opt,name=response_id,json=responseId,proto3" json:"response_id,omitempty"`
-	RequestId  uint64 `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	T1         int64  `protobuf:"varint,10,opt,name=t1,proto3" json:"t1,omitempty"`
-	T2         int64  `protobuf:"varint,11,opt,name=t2,proto3" json:"t2,omitempty"`
-	T3         int64  `protobuf:"varint,12,opt,name=t3,proto3" json:"t3,omitempty"`
-	T4         int64  `protobuf:"varint,13,opt,name=t4,proto3" json:"t4,omitempty"`
+	Id        uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	RequestId uint64 `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	T1        int64  `protobuf:"varint,10,opt,name=t1,proto3" json:"t1,omitempty"`
+	T2        int64  `protobuf:"varint,11,opt,name=t2,proto3" json:"t2,omitempty"`
+	T3        int64  `protobuf:"varint,12,opt,name=t3,proto3" json:"t3,omitempty"`
+	T4        int64  `protobuf:"varint,13,opt,name=t4,proto3" json:"t4,omitempty"`
 }
 
 func (x *TimeSyncResponse) Reset() {
 	*x = TimeSyncResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tgams_proto_msgTypes[3]
+		mi := &file_tgams_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -274,7 +504,7 @@ func (x *TimeSyncResponse) String() string {
 func (*TimeSyncResponse) ProtoMessage() {}
 
 func (x *TimeSyncResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tgams_proto_msgTypes[3]
+	mi := &file_tgams_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -287,12 +517,12 @@ func (x *TimeSyncResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimeSyncResponse.ProtoReflect.Descriptor instead.
 func (*TimeSyncResponse) Descriptor() ([]byte, []int) {
-	return file_tgams_proto_rawDescGZIP(), []int{3}
+	return file_tgams_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *TimeSyncResponse) GetResponseId() uint64 {
+func (x *TimeSyncResponse) GetId() uint64 {
 	if x != nil {
-		return x.ResponseId
+		return x.Id
 	}
 	return 0
 }
@@ -332,46 +562,593 @@ func (x *TimeSyncResponse) GetT4() int64 {
 	return 0
 }
 
+// Telemetry is a wrapper around a single telemetry collection request
+type Telemetry struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Type     TelemetryType     `protobuf:"varint,1,opt,name=type,proto3,enum=TelemetryType" json:"type,omitempty"`
+	Interval uint32            `protobuf:"varint,2,opt,name=interval,proto3" json:"interval,omitempty"`
+	Session  string            `protobuf:"bytes,10,opt,name=session,proto3" json:"session,omitempty"`
+	Params   map[string]string `protobuf:"bytes,11,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *Telemetry) Reset() {
+	*x = Telemetry{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tgams_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Telemetry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Telemetry) ProtoMessage() {}
+
+func (x *Telemetry) ProtoReflect() protoreflect.Message {
+	mi := &file_tgams_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Telemetry.ProtoReflect.Descriptor instead.
+func (*Telemetry) Descriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *Telemetry) GetType() TelemetryType {
+	if x != nil {
+		return x.Type
+	}
+	return TelemetryType_TELEMETRY_UNKNOWN
+}
+
+func (x *Telemetry) GetInterval() uint32 {
+	if x != nil {
+		return x.Interval
+	}
+	return 0
+}
+
+func (x *Telemetry) GetSession() string {
+	if x != nil {
+		return x.Session
+	}
+	return ""
+}
+
+func (x *Telemetry) GetParams() map[string]string {
+	if x != nil {
+		return x.Params
+	}
+	return nil
+}
+
+// StartTelemetryRequest sends a request to start gathering telemetry
+type StartTelemetryRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id           uint64       `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	TriggerType  TriggerType  `protobuf:"varint,2,opt,name=trigger_type,json=triggerType,proto3,enum=TriggerType" json:"trigger_type,omitempty"`
+	TriggerValue int64        `protobuf:"varint,3,opt,name=trigger_value,json=triggerValue,proto3" json:"trigger_value,omitempty"`
+	Outputs      []*Output    `protobuf:"bytes,4,rep,name=outputs,proto3" json:"outputs,omitempty"`
+	Telemetries  []*Telemetry `protobuf:"bytes,10,rep,name=telemetries,proto3" json:"telemetries,omitempty"`
+}
+
+func (x *StartTelemetryRequest) Reset() {
+	*x = StartTelemetryRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tgams_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StartTelemetryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StartTelemetryRequest) ProtoMessage() {}
+
+func (x *StartTelemetryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tgams_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StartTelemetryRequest.ProtoReflect.Descriptor instead.
+func (*StartTelemetryRequest) Descriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *StartTelemetryRequest) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *StartTelemetryRequest) GetTriggerType() TriggerType {
+	if x != nil {
+		return x.TriggerType
+	}
+	return TriggerType_TRIGGER_UNKNOWN
+}
+
+func (x *StartTelemetryRequest) GetTriggerValue() int64 {
+	if x != nil {
+		return x.TriggerValue
+	}
+	return 0
+}
+
+func (x *StartTelemetryRequest) GetOutputs() []*Output {
+	if x != nil {
+		return x.Outputs
+	}
+	return nil
+}
+
+func (x *StartTelemetryRequest) GetTelemetries() []*Telemetry {
+	if x != nil {
+		return x.Telemetries
+	}
+	return nil
+}
+
+// StartTelemetryResponse sends a response to a start telemetry request
+type StartTelemetryResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id          uint64       `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	RequestId   uint64       `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Telemetries []*Telemetry `protobuf:"bytes,10,rep,name=telemetries,proto3" json:"telemetries,omitempty"`
+}
+
+func (x *StartTelemetryResponse) Reset() {
+	*x = StartTelemetryResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tgams_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StartTelemetryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StartTelemetryResponse) ProtoMessage() {}
+
+func (x *StartTelemetryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tgams_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StartTelemetryResponse.ProtoReflect.Descriptor instead.
+func (*StartTelemetryResponse) Descriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *StartTelemetryResponse) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *StartTelemetryResponse) GetRequestId() uint64 {
+	if x != nil {
+		return x.RequestId
+	}
+	return 0
+}
+
+func (x *StartTelemetryResponse) GetTelemetries() []*Telemetry {
+	if x != nil {
+		return x.Telemetries
+	}
+	return nil
+}
+
+// GetTelemetryRequest sends a request to retrieve the telemetry data in json format
+type GetTelemetryRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id      uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Session string `protobuf:"bytes,2,opt,name=session,proto3" json:"session,omitempty"`
+}
+
+func (x *GetTelemetryRequest) Reset() {
+	*x = GetTelemetryRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tgams_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetTelemetryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTelemetryRequest) ProtoMessage() {}
+
+func (x *GetTelemetryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tgams_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTelemetryRequest.ProtoReflect.Descriptor instead.
+func (*GetTelemetryRequest) Descriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetTelemetryRequest) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *GetTelemetryRequest) GetSession() string {
+	if x != nil {
+		return x.Session
+	}
+	return ""
+}
+
+// GetTelemetryResponse sends a response to a get telemetry request
+type GetTelemetryResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id        uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	RequestId uint64   `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Values    []string `protobuf:"bytes,10,rep,name=values,proto3" json:"values,omitempty"`
+}
+
+func (x *GetTelemetryResponse) Reset() {
+	*x = GetTelemetryResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tgams_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetTelemetryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTelemetryResponse) ProtoMessage() {}
+
+func (x *GetTelemetryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tgams_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTelemetryResponse.ProtoReflect.Descriptor instead.
+func (*GetTelemetryResponse) Descriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetTelemetryResponse) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *GetTelemetryResponse) GetRequestId() uint64 {
+	if x != nil {
+		return x.RequestId
+	}
+	return 0
+}
+
+func (x *GetTelemetryResponse) GetValues() []string {
+	if x != nil {
+		return x.Values
+	}
+	return nil
+}
+
+// StopTelemetryRequest sends a request to stop gathering telemetry
+type StopTelemetryRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id      uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Session string `protobuf:"bytes,2,opt,name=session,proto3" json:"session,omitempty"`
+}
+
+func (x *StopTelemetryRequest) Reset() {
+	*x = StopTelemetryRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tgams_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StopTelemetryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StopTelemetryRequest) ProtoMessage() {}
+
+func (x *StopTelemetryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tgams_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StopTelemetryRequest.ProtoReflect.Descriptor instead.
+func (*StopTelemetryRequest) Descriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *StopTelemetryRequest) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *StopTelemetryRequest) GetSession() string {
+	if x != nil {
+		return x.Session
+	}
+	return ""
+}
+
+// StopTelemetryResponse sends a response to a stop telemetry request along with the telemetry data
+type StopTelemetryResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id        uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	RequestId uint64   `protobuf:"varint,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Values    []string `protobuf:"bytes,10,rep,name=values,proto3" json:"values,omitempty"`
+}
+
+func (x *StopTelemetryResponse) Reset() {
+	*x = StopTelemetryResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tgams_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StopTelemetryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StopTelemetryResponse) ProtoMessage() {}
+
+func (x *StopTelemetryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tgams_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StopTelemetryResponse.ProtoReflect.Descriptor instead.
+func (*StopTelemetryResponse) Descriptor() ([]byte, []int) {
+	return file_tgams_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *StopTelemetryResponse) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *StopTelemetryResponse) GetRequestId() uint64 {
+	if x != nil {
+		return x.RequestId
+	}
+	return 0
+}
+
+func (x *StopTelemetryResponse) GetValues() []string {
+	if x != nil {
+		return x.Values
+	}
+	return nil
+}
+
 var File_tgams_proto protoreflect.FileDescriptor
 
 var file_tgams_proto_rawDesc = []byte{
-	0x0a, 0x0b, 0x74, 0x67, 0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x2c, 0x0a,
-	0x0b, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a,
-	0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04,
-	0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x22, 0xd2, 0x01, 0x0a, 0x0c,
-	0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1f, 0x0a, 0x0b,
-	0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x04, 0x52, 0x0a, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x49, 0x64, 0x12, 0x1d, 0x0a,
-	0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x04, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x30, 0x0a, 0x06,
-	0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x18, 0x2e, 0x50,
-	0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x50, 0x69, 0x6e, 0x67,
-	0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x50,
-	0x0a, 0x0a, 0x50, 0x69, 0x6e, 0x67, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x06, 0x0a, 0x02,
-	0x4f, 0x4b, 0x10, 0x00, 0x12, 0x0c, 0x0a, 0x08, 0x53, 0x54, 0x41, 0x52, 0x54, 0x49, 0x4e, 0x47,
-	0x10, 0x01, 0x12, 0x0c, 0x0a, 0x08, 0x53, 0x54, 0x4f, 0x50, 0x50, 0x49, 0x4e, 0x47, 0x10, 0x02,
-	0x12, 0x09, 0x0a, 0x05, 0x52, 0x45, 0x41, 0x44, 0x59, 0x10, 0x03, 0x12, 0x08, 0x0a, 0x04, 0x42,
-	0x55, 0x53, 0x59, 0x10, 0x04, 0x12, 0x09, 0x0a, 0x05, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x05,
-	0x22, 0x40, 0x0a, 0x0f, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x79, 0x6e, 0x63, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x49, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x31, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02,
-	0x74, 0x31, 0x22, 0x92, 0x01, 0x0a, 0x10, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x79, 0x6e, 0x63, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x72, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x0a, 0x72, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x72, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x31, 0x18, 0x0a, 0x20,
-	0x01, 0x28, 0x03, 0x52, 0x02, 0x74, 0x31, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x32, 0x18, 0x0b, 0x20,
-	0x01, 0x28, 0x03, 0x52, 0x02, 0x74, 0x32, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x33, 0x18, 0x0c, 0x20,
-	0x01, 0x28, 0x03, 0x52, 0x02, 0x74, 0x33, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x34, 0x18, 0x0d, 0x20,
-	0x01, 0x28, 0x03, 0x52, 0x02, 0x74, 0x34, 0x32, 0x10, 0x0a, 0x0e, 0x43, 0x6f, 0x6e, 0x74, 0x72,
-	0x6f, 0x6c, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x32, 0x12, 0x0a, 0x10, 0x54, 0x65, 0x6c,
-	0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x42, 0x35, 0x5a,
-	0x20, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x42, 0x47, 0x72, 0x65,
-	0x77, 0x65, 0x6c, 0x6c, 0x2f, 0x74, 0x67, 0x61, 0x6d, 0x73, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x67,
-	0x6f, 0xaa, 0x02, 0x10, 0x42, 0x65, 0x6e, 0x47, 0x72, 0x65, 0x77, 0x65, 0x6c, 0x6c, 0x2e, 0x54,
-	0x67, 0x61, 0x6d, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x0a, 0x0b, 0x74, 0x67, 0x61, 0x6d, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x3f, 0x0a,
+	0x06, 0x4f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x12, 0x1f, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x0b, 0x2e, 0x4f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x54, 0x79,
+	0x70, 0x65, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x1d,
+	0x0a, 0x0b, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x22, 0xce, 0x01,
+	0x0a, 0x0c, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e,
+	0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1d,
+	0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x04, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x30, 0x0a,
+	0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x18, 0x2e,
+	0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x50, 0x69, 0x6e,
+	0x67, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22,
+	0x5d, 0x0a, 0x0a, 0x50, 0x69, 0x6e, 0x67, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x0b, 0x0a,
+	0x07, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x06, 0x0a, 0x02, 0x4f, 0x4b,
+	0x10, 0x01, 0x12, 0x0c, 0x0a, 0x08, 0x53, 0x54, 0x41, 0x52, 0x54, 0x49, 0x4e, 0x47, 0x10, 0x02,
+	0x12, 0x0c, 0x0a, 0x08, 0x53, 0x54, 0x4f, 0x50, 0x50, 0x49, 0x4e, 0x47, 0x10, 0x03, 0x12, 0x09,
+	0x0a, 0x05, 0x52, 0x45, 0x41, 0x44, 0x59, 0x10, 0x04, 0x12, 0x08, 0x0a, 0x04, 0x42, 0x55, 0x53,
+	0x59, 0x10, 0x05, 0x12, 0x09, 0x0a, 0x05, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x06, 0x22, 0x31,
+	0x0a, 0x0f, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x79, 0x6e, 0x63, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x31, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x74,
+	0x31, 0x22, 0x81, 0x01, 0x0a, 0x10, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x79, 0x6e, 0x63, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x31, 0x18, 0x0a, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x02, 0x74, 0x31, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x32, 0x18, 0x0b, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x02, 0x74, 0x32, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x33, 0x18, 0x0c, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x02, 0x74, 0x33, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x34, 0x18, 0x0d, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x02, 0x74, 0x34, 0x22, 0xd0, 0x01, 0x0a, 0x09, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65,
+	0x74, 0x72, 0x79, 0x12, 0x22, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0e, 0x32, 0x0e, 0x2e, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x54, 0x79, 0x70,
+	0x65, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x6e, 0x74, 0x65, 0x72,
+	0x76, 0x61, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x08, 0x69, 0x6e, 0x74, 0x65, 0x72,
+	0x76, 0x61, 0x6c, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x0a,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x2e, 0x0a,
+	0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x0b, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e,
+	0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
+	0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x1a, 0x39, 0x0a,
+	0x0b, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03,
+	0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14,
+	0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76,
+	0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xce, 0x01, 0x0a, 0x15, 0x53, 0x74, 0x61,
+	0x72, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02,
+	0x69, 0x64, 0x12, 0x2f, 0x0a, 0x0c, 0x74, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x5f, 0x74, 0x79,
+	0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x0c, 0x2e, 0x54, 0x72, 0x69, 0x67, 0x67,
+	0x65, 0x72, 0x54, 0x79, 0x70, 0x65, 0x52, 0x0b, 0x74, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x54,
+	0x79, 0x70, 0x65, 0x12, 0x23, 0x0a, 0x0d, 0x74, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x5f, 0x76,
+	0x61, 0x6c, 0x75, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0c, 0x74, 0x72, 0x69, 0x67,
+	0x67, 0x65, 0x72, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x21, 0x0a, 0x07, 0x6f, 0x75, 0x74, 0x70,
+	0x75, 0x74, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x07, 0x2e, 0x4f, 0x75, 0x74, 0x70,
+	0x75, 0x74, 0x52, 0x07, 0x6f, 0x75, 0x74, 0x70, 0x75, 0x74, 0x73, 0x12, 0x2c, 0x0a, 0x0b, 0x74,
+	0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x65, 0x73, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x0a, 0x2e, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x52, 0x0b, 0x74, 0x65,
+	0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x65, 0x73, 0x22, 0x75, 0x0a, 0x16, 0x53, 0x74, 0x61,
+	0x72, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69,
+	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x49, 0x64, 0x12, 0x2c, 0x0a, 0x0b, 0x74, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x65,
+	0x73, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65,
+	0x74, 0x72, 0x79, 0x52, 0x0b, 0x74, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x69, 0x65, 0x73,
+	0x22, 0x3f, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f,
+	0x6e, 0x22, 0x5d, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72,
+	0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x72, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x09, 0x72,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x73, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x73,
+	0x22, 0x40, 0x0a, 0x14, 0x53, 0x74, 0x6f, 0x70, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72,
+	0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x22, 0x5e, 0x0a, 0x15, 0x53, 0x74, 0x6f, 0x70, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65,
+	0x74, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x72,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x73, 0x18, 0x0a, 0x20, 0x03, 0x28, 0x09, 0x52, 0x06, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x73, 0x2a, 0x76, 0x0a, 0x0b, 0x54, 0x72, 0x69, 0x67, 0x67, 0x65, 0x72, 0x54, 0x79, 0x70,
+	0x65, 0x12, 0x13, 0x0a, 0x0f, 0x54, 0x52, 0x49, 0x47, 0x47, 0x45, 0x52, 0x5f, 0x55, 0x4e, 0x4b,
+	0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x13, 0x0a, 0x0f, 0x54, 0x52, 0x49, 0x47, 0x47, 0x45,
+	0x52, 0x5f, 0x49, 0x4e, 0x53, 0x54, 0x41, 0x4e, 0x54, 0x10, 0x01, 0x12, 0x14, 0x0a, 0x10, 0x54,
+	0x52, 0x49, 0x47, 0x47, 0x45, 0x52, 0x5f, 0x41, 0x42, 0x53, 0x4f, 0x4c, 0x55, 0x54, 0x45, 0x10,
+	0x02, 0x12, 0x14, 0x0a, 0x10, 0x54, 0x52, 0x49, 0x47, 0x47, 0x45, 0x52, 0x5f, 0x52, 0x45, 0x4c,
+	0x41, 0x54, 0x49, 0x56, 0x45, 0x10, 0x03, 0x12, 0x11, 0x0a, 0x0d, 0x54, 0x52, 0x49, 0x47, 0x47,
+	0x45, 0x52, 0x5f, 0x53, 0x54, 0x41, 0x52, 0x54, 0x10, 0x04, 0x2a, 0x66, 0x0a, 0x0a, 0x4f, 0x75,
+	0x74, 0x70, 0x75, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x12, 0x0a, 0x0e, 0x4f, 0x55, 0x54, 0x50,
+	0x55, 0x54, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x0f, 0x0a, 0x0b,
+	0x4f, 0x55, 0x54, 0x50, 0x55, 0x54, 0x5f, 0x50, 0x55, 0x4c, 0x4c, 0x10, 0x01, 0x12, 0x0f, 0x0a,
+	0x0b, 0x4f, 0x55, 0x54, 0x50, 0x55, 0x54, 0x5f, 0x46, 0x49, 0x4c, 0x45, 0x10, 0x02, 0x12, 0x11,
+	0x0a, 0x0d, 0x4f, 0x55, 0x54, 0x50, 0x55, 0x54, 0x5f, 0x53, 0x4f, 0x43, 0x4b, 0x45, 0x54, 0x10,
+	0x03, 0x12, 0x0f, 0x0a, 0x0b, 0x4f, 0x55, 0x54, 0x50, 0x55, 0x54, 0x5f, 0x50, 0x49, 0x50, 0x45,
+	0x10, 0x04, 0x2a, 0x6a, 0x0a, 0x0d, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x54,
+	0x79, 0x70, 0x65, 0x12, 0x15, 0x0a, 0x11, 0x54, 0x45, 0x4c, 0x45, 0x4d, 0x45, 0x54, 0x52, 0x59,
+	0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x18, 0x0a, 0x14, 0x54, 0x45,
+	0x4c, 0x45, 0x4d, 0x45, 0x54, 0x52, 0x59, 0x5f, 0x54, 0x48, 0x52, 0x4f, 0x55, 0x47, 0x48, 0x50,
+	0x55, 0x54, 0x10, 0x01, 0x12, 0x15, 0x0a, 0x11, 0x54, 0x45, 0x4c, 0x45, 0x4d, 0x45, 0x54, 0x52,
+	0x59, 0x5f, 0x4c, 0x41, 0x54, 0x45, 0x4e, 0x43, 0x59, 0x10, 0x02, 0x12, 0x11, 0x0a, 0x0d, 0x54,
+	0x45, 0x4c, 0x45, 0x4d, 0x45, 0x54, 0x52, 0x59, 0x5f, 0x43, 0x50, 0x55, 0x10, 0x03, 0x32, 0x9f,
+	0x02, 0x0a, 0x07, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x6f, 0x6c, 0x12, 0x23, 0x0a, 0x04, 0x50, 0x69,
+	0x6e, 0x67, 0x12, 0x0c, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x0d, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x2f, 0x0a, 0x08, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x79, 0x6e, 0x63, 0x12, 0x10, 0x2e, 0x54, 0x69,
+	0x6d, 0x65, 0x53, 0x79, 0x6e, 0x63, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e,
+	0x54, 0x69, 0x6d, 0x65, 0x53, 0x79, 0x6e, 0x63, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x41, 0x0a, 0x0e, 0x53, 0x74, 0x61, 0x72, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74,
+	0x72, 0x79, 0x12, 0x16, 0x2e, 0x53, 0x74, 0x61, 0x72, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65,
+	0x74, 0x72, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x53, 0x74, 0x61,
+	0x72, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x3e, 0x0a, 0x0d, 0x53, 0x74, 0x6f, 0x70, 0x54, 0x65, 0x6c, 0x65, 0x6d,
+	0x65, 0x74, 0x72, 0x79, 0x12, 0x15, 0x2e, 0x53, 0x74, 0x6f, 0x70, 0x54, 0x65, 0x6c, 0x65, 0x6d,
+	0x65, 0x74, 0x72, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x53, 0x74,
+	0x6f, 0x70, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x3b, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65,
+	0x74, 0x72, 0x79, 0x12, 0x14, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74,
+	0x72, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x47, 0x65, 0x74, 0x54,
+	0x65, 0x6c, 0x65, 0x6d, 0x65, 0x74, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x42, 0x35, 0x5a, 0x20, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x42,
+	0x47, 0x72, 0x65, 0x77, 0x65, 0x6c, 0x6c, 0x2f, 0x74, 0x67, 0x61, 0x6d, 0x73, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x67, 0x6f, 0xaa, 0x02, 0x10, 0x42, 0x65, 0x6e, 0x47, 0x72, 0x65, 0x77, 0x65, 0x6c,
+	0x6c, 0x2e, 0x54, 0x67, 0x61, 0x6d, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -386,22 +1163,51 @@ func file_tgams_proto_rawDescGZIP() []byte {
 	return file_tgams_proto_rawDescData
 }
 
-var file_tgams_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tgams_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_tgams_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_tgams_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_tgams_proto_goTypes = []interface{}{
-	(PingResponse_PingStatus)(0), // 0: PingResponse.PingStatus
-	(*PingRequest)(nil),          // 1: PingRequest
-	(*PingResponse)(nil),         // 2: PingResponse
-	(*TimeSyncRequest)(nil),      // 3: TimeSyncRequest
-	(*TimeSyncResponse)(nil),     // 4: TimeSyncResponse
+	(TriggerType)(0),               // 0: TriggerType
+	(OutputType)(0),                // 1: OutputType
+	(TelemetryType)(0),             // 2: TelemetryType
+	(PingResponse_PingStatus)(0),   // 3: PingResponse.PingStatus
+	(*Output)(nil),                 // 4: Output
+	(*PingRequest)(nil),            // 5: PingRequest
+	(*PingResponse)(nil),           // 6: PingResponse
+	(*TimeSyncRequest)(nil),        // 7: TimeSyncRequest
+	(*TimeSyncResponse)(nil),       // 8: TimeSyncResponse
+	(*Telemetry)(nil),              // 9: Telemetry
+	(*StartTelemetryRequest)(nil),  // 10: StartTelemetryRequest
+	(*StartTelemetryResponse)(nil), // 11: StartTelemetryResponse
+	(*GetTelemetryRequest)(nil),    // 12: GetTelemetryRequest
+	(*GetTelemetryResponse)(nil),   // 13: GetTelemetryResponse
+	(*StopTelemetryRequest)(nil),   // 14: StopTelemetryRequest
+	(*StopTelemetryResponse)(nil),  // 15: StopTelemetryResponse
+	nil,                            // 16: Telemetry.ParamsEntry
 }
 var file_tgams_proto_depIdxs = []int32{
-	0, // 0: PingResponse.status:type_name -> PingResponse.PingStatus
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	1,  // 0: Output.type:type_name -> OutputType
+	3,  // 1: PingResponse.status:type_name -> PingResponse.PingStatus
+	2,  // 2: Telemetry.type:type_name -> TelemetryType
+	16, // 3: Telemetry.params:type_name -> Telemetry.ParamsEntry
+	0,  // 4: StartTelemetryRequest.trigger_type:type_name -> TriggerType
+	4,  // 5: StartTelemetryRequest.outputs:type_name -> Output
+	9,  // 6: StartTelemetryRequest.telemetries:type_name -> Telemetry
+	9,  // 7: StartTelemetryResponse.telemetries:type_name -> Telemetry
+	5,  // 8: Control.Ping:input_type -> PingRequest
+	7,  // 9: Control.TimeSync:input_type -> TimeSyncRequest
+	10, // 10: Control.StartTelemetry:input_type -> StartTelemetryRequest
+	14, // 11: Control.StopTelemetry:input_type -> StopTelemetryRequest
+	12, // 12: Control.GetTelemetry:input_type -> GetTelemetryRequest
+	6,  // 13: Control.Ping:output_type -> PingResponse
+	8,  // 14: Control.TimeSync:output_type -> TimeSyncResponse
+	11, // 15: Control.StartTelemetry:output_type -> StartTelemetryResponse
+	15, // 16: Control.StopTelemetry:output_type -> StopTelemetryResponse
+	13, // 17: Control.GetTelemetry:output_type -> GetTelemetryResponse
+	13, // [13:18] is the sub-list for method output_type
+	8,  // [8:13] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_tgams_proto_init() }
@@ -411,7 +1217,7 @@ func file_tgams_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_tgams_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PingRequest); i {
+			switch v := v.(*Output); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -423,7 +1229,7 @@ func file_tgams_proto_init() {
 			}
 		}
 		file_tgams_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PingResponse); i {
+			switch v := v.(*PingRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -435,7 +1241,7 @@ func file_tgams_proto_init() {
 			}
 		}
 		file_tgams_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TimeSyncRequest); i {
+			switch v := v.(*PingResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -447,7 +1253,103 @@ func file_tgams_proto_init() {
 			}
 		}
 		file_tgams_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*TimeSyncRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tgams_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TimeSyncResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tgams_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Telemetry); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tgams_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*StartTelemetryRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tgams_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*StartTelemetryResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tgams_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetTelemetryRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tgams_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetTelemetryResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tgams_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*StopTelemetryRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tgams_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*StopTelemetryResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -464,10 +1366,10 @@ func file_tgams_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_tgams_proto_rawDesc,
-			NumEnums:      1,
-			NumMessages:   4,
+			NumEnums:      4,
+			NumMessages:   13,
 			NumExtensions: 0,
-			NumServices:   2,
+			NumServices:   1,
 		},
 		GoTypes:           file_tgams_proto_goTypes,
 		DependencyIndexes: file_tgams_proto_depIdxs,
@@ -488,70 +1390,218 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// ControlChannelClient is the client API for ControlChannel service.
+// ControlClient is the client API for Control service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type ControlChannelClient interface {
+type ControlClient interface {
+	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	TimeSync(ctx context.Context, in *TimeSyncRequest, opts ...grpc.CallOption) (*TimeSyncResponse, error)
+	StartTelemetry(ctx context.Context, in *StartTelemetryRequest, opts ...grpc.CallOption) (*StartTelemetryResponse, error)
+	StopTelemetry(ctx context.Context, in *StopTelemetryRequest, opts ...grpc.CallOption) (*StopTelemetryResponse, error)
+	GetTelemetry(ctx context.Context, in *GetTelemetryRequest, opts ...grpc.CallOption) (*GetTelemetryResponse, error)
 }
 
-type controlChannelClient struct {
+type controlClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewControlChannelClient(cc grpc.ClientConnInterface) ControlChannelClient {
-	return &controlChannelClient{cc}
+func NewControlClient(cc grpc.ClientConnInterface) ControlClient {
+	return &controlClient{cc}
 }
 
-// ControlChannelServer is the server API for ControlChannel service.
-type ControlChannelServer interface {
+func (c *controlClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error) {
+	out := new(PingResponse)
+	err := c.cc.Invoke(ctx, "/Control/Ping", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-// UnimplementedControlChannelServer can be embedded to have forward compatible implementations.
-type UnimplementedControlChannelServer struct {
+func (c *controlClient) TimeSync(ctx context.Context, in *TimeSyncRequest, opts ...grpc.CallOption) (*TimeSyncResponse, error) {
+	out := new(TimeSyncResponse)
+	err := c.cc.Invoke(ctx, "/Control/TimeSync", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-func RegisterControlChannelServer(s *grpc.Server, srv ControlChannelServer) {
-	s.RegisterService(&_ControlChannel_serviceDesc, srv)
+func (c *controlClient) StartTelemetry(ctx context.Context, in *StartTelemetryRequest, opts ...grpc.CallOption) (*StartTelemetryResponse, error) {
+	out := new(StartTelemetryResponse)
+	err := c.cc.Invoke(ctx, "/Control/StartTelemetry", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-var _ControlChannel_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "ControlChannel",
-	HandlerType: (*ControlChannelServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "tgams.proto",
+func (c *controlClient) StopTelemetry(ctx context.Context, in *StopTelemetryRequest, opts ...grpc.CallOption) (*StopTelemetryResponse, error) {
+	out := new(StopTelemetryResponse)
+	err := c.cc.Invoke(ctx, "/Control/StopTelemetry", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-// TelemetryChannelClient is the client API for TelemetryChannel service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type TelemetryChannelClient interface {
+func (c *controlClient) GetTelemetry(ctx context.Context, in *GetTelemetryRequest, opts ...grpc.CallOption) (*GetTelemetryResponse, error) {
+	out := new(GetTelemetryResponse)
+	err := c.cc.Invoke(ctx, "/Control/GetTelemetry", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-type telemetryChannelClient struct {
-	cc grpc.ClientConnInterface
+// ControlServer is the server API for Control service.
+type ControlServer interface {
+	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	TimeSync(context.Context, *TimeSyncRequest) (*TimeSyncResponse, error)
+	StartTelemetry(context.Context, *StartTelemetryRequest) (*StartTelemetryResponse, error)
+	StopTelemetry(context.Context, *StopTelemetryRequest) (*StopTelemetryResponse, error)
+	GetTelemetry(context.Context, *GetTelemetryRequest) (*GetTelemetryResponse, error)
 }
 
-func NewTelemetryChannelClient(cc grpc.ClientConnInterface) TelemetryChannelClient {
-	return &telemetryChannelClient{cc}
+// UnimplementedControlServer can be embedded to have forward compatible implementations.
+type UnimplementedControlServer struct {
 }
 
-// TelemetryChannelServer is the server API for TelemetryChannel service.
-type TelemetryChannelServer interface {
+func (*UnimplementedControlServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (*UnimplementedControlServer) TimeSync(context.Context, *TimeSyncRequest) (*TimeSyncResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TimeSync not implemented")
+}
+func (*UnimplementedControlServer) StartTelemetry(context.Context, *StartTelemetryRequest) (*StartTelemetryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartTelemetry not implemented")
+}
+func (*UnimplementedControlServer) StopTelemetry(context.Context, *StopTelemetryRequest) (*StopTelemetryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StopTelemetry not implemented")
+}
+func (*UnimplementedControlServer) GetTelemetry(context.Context, *GetTelemetryRequest) (*GetTelemetryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTelemetry not implemented")
 }
 
-// UnimplementedTelemetryChannelServer can be embedded to have forward compatible implementations.
-type UnimplementedTelemetryChannelServer struct {
+func RegisterControlServer(s *grpc.Server, srv ControlServer) {
+	s.RegisterService(&_Control_serviceDesc, srv)
 }
 
-func RegisterTelemetryChannelServer(s *grpc.Server, srv TelemetryChannelServer) {
-	s.RegisterService(&_TelemetryChannel_serviceDesc, srv)
+func _Control_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Control/Ping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlServer).Ping(ctx, req.(*PingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-var _TelemetryChannel_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "TelemetryChannel",
-	HandlerType: (*TelemetryChannelServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "tgams.proto",
+func _Control_TimeSync_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TimeSyncRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlServer).TimeSync(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Control/TimeSync",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlServer).TimeSync(ctx, req.(*TimeSyncRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Control_StartTelemetry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StartTelemetryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlServer).StartTelemetry(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Control/StartTelemetry",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlServer).StartTelemetry(ctx, req.(*StartTelemetryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Control_StopTelemetry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StopTelemetryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlServer).StopTelemetry(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Control/StopTelemetry",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlServer).StopTelemetry(ctx, req.(*StopTelemetryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Control_GetTelemetry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTelemetryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlServer).GetTelemetry(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Control/GetTelemetry",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlServer).GetTelemetry(ctx, req.(*GetTelemetryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Control_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "Control",
+	HandlerType: (*ControlServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Ping",
+			Handler:    _Control_Ping_Handler,
+		},
+		{
+			MethodName: "TimeSync",
+			Handler:    _Control_TimeSync_Handler,
+		},
+		{
+			MethodName: "StartTelemetry",
+			Handler:    _Control_StartTelemetry_Handler,
+		},
+		{
+			MethodName: "StopTelemetry",
+			Handler:    _Control_StopTelemetry_Handler,
+		},
+		{
+			MethodName: "GetTelemetry",
+			Handler:    _Control_GetTelemetry_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "tgams.proto",
 }

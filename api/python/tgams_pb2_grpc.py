@@ -2,38 +2,12 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
+import tgams_pb2 as tgams__pb2
 
 
-class ControlChannelStub(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def __init__(self, channel):
-        """Constructor.
-
-        Args:
-            channel: A grpc.Channel.
-        """
-
-
-class ControlChannelServicer(object):
-    """Missing associated documentation comment in .proto file."""
-
-
-def add_ControlChannelServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-            'ControlChannel', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
- # This class is part of an EXPERIMENTAL API.
-class ControlChannel(object):
-    """Missing associated documentation comment in .proto file."""
-
-
-class TelemetryChannelStub(object):
-    """Missing associated documentation comment in .proto file."""
+class ControlStub(object):
+    """Control service is the primary control channel
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -41,20 +15,187 @@ class TelemetryChannelStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.Ping = channel.unary_unary(
+                '/Control/Ping',
+                request_serializer=tgams__pb2.PingRequest.SerializeToString,
+                response_deserializer=tgams__pb2.PingResponse.FromString,
+                )
+        self.TimeSync = channel.unary_unary(
+                '/Control/TimeSync',
+                request_serializer=tgams__pb2.TimeSyncRequest.SerializeToString,
+                response_deserializer=tgams__pb2.TimeSyncResponse.FromString,
+                )
+        self.StartTelemetry = channel.unary_unary(
+                '/Control/StartTelemetry',
+                request_serializer=tgams__pb2.StartTelemetryRequest.SerializeToString,
+                response_deserializer=tgams__pb2.StartTelemetryResponse.FromString,
+                )
+        self.StopTelemetry = channel.unary_unary(
+                '/Control/StopTelemetry',
+                request_serializer=tgams__pb2.StopTelemetryRequest.SerializeToString,
+                response_deserializer=tgams__pb2.StopTelemetryResponse.FromString,
+                )
+        self.GetTelemetry = channel.unary_unary(
+                '/Control/GetTelemetry',
+                request_serializer=tgams__pb2.GetTelemetryRequest.SerializeToString,
+                response_deserializer=tgams__pb2.GetTelemetryResponse.FromString,
+                )
 
 
-class TelemetryChannelServicer(object):
-    """Missing associated documentation comment in .proto file."""
+class ControlServicer(object):
+    """Control service is the primary control channel
+    """
+
+    def Ping(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def TimeSync(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def StartTelemetry(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def StopTelemetry(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTelemetry(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
-def add_TelemetryChannelServicer_to_server(servicer, server):
+def add_ControlServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'Ping': grpc.unary_unary_rpc_method_handler(
+                    servicer.Ping,
+                    request_deserializer=tgams__pb2.PingRequest.FromString,
+                    response_serializer=tgams__pb2.PingResponse.SerializeToString,
+            ),
+            'TimeSync': grpc.unary_unary_rpc_method_handler(
+                    servicer.TimeSync,
+                    request_deserializer=tgams__pb2.TimeSyncRequest.FromString,
+                    response_serializer=tgams__pb2.TimeSyncResponse.SerializeToString,
+            ),
+            'StartTelemetry': grpc.unary_unary_rpc_method_handler(
+                    servicer.StartTelemetry,
+                    request_deserializer=tgams__pb2.StartTelemetryRequest.FromString,
+                    response_serializer=tgams__pb2.StartTelemetryResponse.SerializeToString,
+            ),
+            'StopTelemetry': grpc.unary_unary_rpc_method_handler(
+                    servicer.StopTelemetry,
+                    request_deserializer=tgams__pb2.StopTelemetryRequest.FromString,
+                    response_serializer=tgams__pb2.StopTelemetryResponse.SerializeToString,
+            ),
+            'GetTelemetry': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTelemetry,
+                    request_deserializer=tgams__pb2.GetTelemetryRequest.FromString,
+                    response_serializer=tgams__pb2.GetTelemetryResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'TelemetryChannel', rpc_method_handlers)
+            'Control', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class TelemetryChannel(object):
-    """Missing associated documentation comment in .proto file."""
+class Control(object):
+    """Control service is the primary control channel
+    """
+
+    @staticmethod
+    def Ping(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Control/Ping',
+            tgams__pb2.PingRequest.SerializeToString,
+            tgams__pb2.PingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def TimeSync(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Control/TimeSync',
+            tgams__pb2.TimeSyncRequest.SerializeToString,
+            tgams__pb2.TimeSyncResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def StartTelemetry(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Control/StartTelemetry',
+            tgams__pb2.StartTelemetryRequest.SerializeToString,
+            tgams__pb2.StartTelemetryResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def StopTelemetry(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Control/StopTelemetry',
+            tgams__pb2.StopTelemetryRequest.SerializeToString,
+            tgams__pb2.StopTelemetryResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetTelemetry(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Control/GetTelemetry',
+            tgams__pb2.GetTelemetryRequest.SerializeToString,
+            tgams__pb2.GetTelemetryResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
