@@ -36,7 +36,7 @@ git add go/tgams.pb.go
 git add csharp/Tgams.cs
 git add python/tgams_pb2.py
 git add python/tgams_pb2_grpc.py
-git commit -m "regenerated grpc libraries"
+git commit -m "regenerate grpc libraries"
 git push
 
 echo "[+] Done. Everything has been rebuilt and the repository has been updated and pushed"
