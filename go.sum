@@ -1,5 +1,11 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
+github.com/BGrewell/go-conversions v0.0.0-20210512190113-ef0a66d37f0f h1:R3AmWTnL4VRNqK3dpUEwi+RCUZCNczbBPhA4oyMy+aI=
+github.com/BGrewell/go-conversions v0.0.0-20210512190113-ef0a66d37f0f/go.mod h1:XtXcz/MP04vhr6c6R/5gZPJZVQpbXlFsKTHr5yy/5sU=
+github.com/BGrewell/go-conversions v0.0.0-20211209222757-47139a3c5eaf h1:hZ2mRTQ/pRzKcgwi2PKabDQYC9Q1Uo3+qG5CNFfD8M4=
+github.com/BGrewell/go-conversions v0.0.0-20211209222757-47139a3c5eaf/go.mod h1:XtXcz/MP04vhr6c6R/5gZPJZVQpbXlFsKTHr5yy/5sU=
+github.com/BGrewell/go-conversions v0.0.0-20211209224842-146e47cfb964 h1:oTRrG2R01peLK4R2lA+pMr0hr8sluLNo1S+k2K2JIY0=
+github.com/BGrewell/go-conversions v0.0.0-20211209224842-146e47cfb964/go.mod h1:XtXcz/MP04vhr6c6R/5gZPJZVQpbXlFsKTHr5yy/5sU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 	"net"
 	"sync"
+	"time"
 )
 
 var (
@@ -100,12 +101,26 @@ func (s *controlServer) Shutdown() {
 	log.Debug("grpc server shut down")
 }
 
-func (s *controlServer) Ping(context.Context, *api.PingRequest) (*api.PingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Ping() not implemented")
+func (s *controlServer) Ping(ctx context.Context, req *api.PingRequest) (response *api.PingResponse, err error) {
+	log.Debug("received grpc ping request")
+	return &api.PingResponse{
+		RequestId: req.Id,
+		Id:        s.getResponseId(),
+		Status:    api.PingResponse_OK,
+	}, nil
 }
 
-func (s *controlServer) TimeSync(context.Context, *api.TimeSyncRequest) (*api.TimeSyncResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TimeSync() not implemented")
+func (s *controlServer) TimeSync(ctx context.Context, req *api.TimeSyncRequest) (response *api.TimeSyncResponse, err error) {
+	//TODO: For accuracy this should be done on a socket where we can request hardware timestamps
+	log.Debug("received grpc timesync request")
+	t2 := time.Now().UnixNano()
+	return &api.TimeSyncResponse{
+		RequestId: req.Id,
+		Id:        s.getResponseId(),
+		T1:        req.T1,
+		T2:        t2,
+		T3:        time.Now().UnixNano(),
+	}, nil
 }
 
 func (s *controlServer) StartTelemetry(context.Context, *api.StartTelemetryRequest) (*api.StartTelemetryResponse, error) {

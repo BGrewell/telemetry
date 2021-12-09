@@ -3,6 +3,7 @@ module github.com/BGrewell/tgams
 go 1.17
 
 require (
+	github.com/BGrewell/go-conversions v0.0.0-20211209224842-146e47cfb964
 	github.com/fatih/color v1.13.0
 	github.com/sirupsen/logrus v1.8.1
 	google.golang.org/grpc v1.42.0
