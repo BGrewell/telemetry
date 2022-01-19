@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/BGrewell/tgams/internal/engine"
 	"github.com/BGrewell/tgams/internal/grpc"
 	log "github.com/BGrewell/tgams/internal/logging"
 	"github.com/BGrewell/tgams/internal/state"
@@ -11,6 +12,7 @@ import (
 	"os"
 	"os/signal"
 	"strings"
+	"time"
 
 	"github.com/fatih/color"
 )
@@ -162,8 +164,17 @@ func RunServer(s state.ServerState) error {
 
 // RunClient executes the program as a client
 func RunClient(s state.ClientState) error {
-	client := grpc.ControlClient{}
-	return client.Connect(fmt.Sprintf("%s:%d", s.HostAddr, s.HostPort), s.Timeout)
+
+	core, err := engine.NewCoreEngine(s.HostAddr, s.HostPort, s.Timeout)
+	if err != nil {
+		return err
+	}
+
+	for core.IsRunning() {
+		time.Sleep(time.Second)
+	}
+
+	return nil
 }
 
 func main() {

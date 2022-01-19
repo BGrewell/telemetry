@@ -11,8 +11,19 @@ import (
 )
 
 type ControlClient struct {
-	client api.ControlClient
-	conn   *grpc.ClientConn
+	client           api.ControlClient
+	conn             *grpc.ClientConn
+	timeout          int
+	timeSyncChan     chan timesync.TimeSyncData
+	timeSyncInterval time.Duration
+	timeSyncBursts   int
+	timeSyncEnabled  bool
+	requestId        uint64
+}
+
+func (c *ControlClient) GetNextRequestId() uint64 {
+	c.requestId++
+	return c.requestId
 }
 
 func (c *ControlClient) Connect(address string, timeout int) (err error) {
@@ -28,6 +39,7 @@ func (c *ControlClient) Connect(address string, timeout int) (err error) {
 	log.Debug("connected to control server")
 
 	c.client = api.NewControlClient(c.conn)
+	c.timeout = timeout
 	log.Debug("created new grpc client with established connection to control server")
 
 	//TODO: TEMP
@@ -64,4 +76,18 @@ func (c *ControlClient) Connect(address string, timeout int) (err error) {
 	offset := conversions.ConvertNanosecondsToStringTime(timesync.CalcOffset(tsr))
 	log.DebugWithFields(map[string]interface{}{"delay": delay, "offset": offset}, "calculated time sync delay and offset")
 	return nil
+}
+
+func (c *ControlClient) SendTimeSyncRequest(t1 int64) (t2, t3 int64, err error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(c.timeout)*time.Second)
+	defer cancel()
+
+	ts := &api.TimeSyncRequest{
+		Id: c.GetNextRequestId(),
+		T1: t1,
+	}
+	tsr, err := c.client.TimeSync(ctx, ts)
+	log.TraceWithFields(map[string]interface{}{"t1": tsr.T1, "t2": tsr.T2, "t3": tsr.T3}, "synced time with control server")
+	return tsr.T2, tsr.T3, err
 }
